@@ -1,13 +1,14 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { trip } from '@/data';
-import { getAccommodation, getDayByIndex } from '@/data/selectors';
+import { getAccommodation, getDayByIndex, dayLabel } from '@/data/selectors';
 import { HeroImage } from '@/components/HeroImage';
 import { TagRow } from '@/components/Tag';
 import { ActivityCard } from '@/components/ActivityCard';
+import { ExtrasList } from '@/components/ExtrasList';
 import { MapsButton } from '@/components/MapsButton';
 import { PageHeader } from '@/components/PageHeader';
-import { BedIcon, InfoIcon } from '@/components/icons';
-import { capitalize, formatLongDate } from '@/lib/dates';
+import { BedIcon, BinocularsIcon, InfoIcon } from '@/components/icons';
+import { capitalize, formatDayMonth, formatLongDate } from '@/lib/dates';
 
 export function DayDetail() {
   const { index } = useParams();
@@ -17,18 +18,29 @@ export function DayDetail() {
   if (!day) return <Navigate to="/dias" replace />;
 
   const accommodation = getAccommodation(trip, day.accommodationId);
+  const dateText =
+    day.endDate && day.endDate !== day.date
+      ? `${capitalize(formatDayMonth(day.date))} – ${formatDayMonth(day.endDate)}`
+      : capitalize(formatLongDate(day.date));
 
   return (
     <div>
-      <PageHeader title={`Día ${day.index}`} back />
+      <PageHeader title={dayLabel(day)} back />
 
-      <div className="space-y-5 p-5 pt-2">
-        <HeroImage src={day.image} alt={day.title} seed={`day-${day.index}`} className="aspect-[16/9] rounded-card">
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 to-transparent" />
+      <div className="space-y-6 p-5 pt-2">
+        <HeroImage
+          src={day.image}
+          alt={day.title}
+          seed={`day-${day.index}`}
+          className="aspect-[16/10] rounded-card"
+        >
+          <div className="scrim" />
           <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-            <p className="text-sm text-white/80">{capitalize(formatLongDate(day.date))}</p>
-            <h2 className="text-2xl font-bold leading-tight">{day.title}</h2>
-            {day.city && <p className="mt-0.5 text-white/80">{day.city}</p>}
+            {day.area && <p className="eyebrow text-white/75">{day.area}</p>}
+            <h2 className="font-display text-3xl font-semibold leading-tight tracking-tightish">
+              {day.title}
+            </h2>
+            <p className="mt-0.5 text-sm text-white/80">{dateText}</p>
           </div>
         </HeroImage>
 
@@ -48,32 +60,39 @@ export function DayDetail() {
 
         {day.activities.length > 0 && (
           <section className="space-y-3">
-            <h3 className="text-lg font-bold text-ink-900">Actividades del día</h3>
+            <h3 className="flex items-center gap-2 text-lg font-bold text-ink-900">
+              <BinocularsIcon width={20} height={20} className="text-brand-600" />
+              El plan del día
+            </h3>
             {day.activities.map((a) => (
               <ActivityCard key={a.id} activity={a} trip={trip} />
             ))}
           </section>
         )}
 
+        <ExtrasList extras={day.extras} trip={trip} />
+
         {day.mealsIncluded.length > 0 && (
           <section className="card p-4">
             <h3 className="font-bold text-ink-900">Comidas incluidas</h3>
-            <ul className="mt-1 list-inside list-disc text-ink-700">
+            <div className="mt-2 flex flex-wrap gap-2">
               {day.mealsIncluded.map((m, i) => (
-                <li key={i}>{m}</li>
+                <span key={i} className="pill bg-amber-100/70 text-amber-800">
+                  {m}
+                </span>
               ))}
-            </ul>
+            </div>
           </section>
         )}
 
         {accommodation && (
           <section className="card flex items-center justify-between gap-3 p-4">
             <div className="min-w-0">
-              <p className="flex items-center gap-1.5 text-sm font-medium uppercase tracking-wide text-ink-500">
-                <BedIcon width={16} height={16} /> Dormís en
+              <p className="eyebrow flex items-center gap-1.5">
+                <BedIcon width={15} height={15} /> Dormís en
               </p>
               <p className="mt-1 truncate text-lg font-bold text-ink-900">{accommodation.name}</p>
-              <p className="text-ink-500">{accommodation.city}</p>
+              <p className="text-ink-500">{accommodation.area}</p>
             </div>
             <MapsButton query={accommodation.mapsQuery} />
           </section>

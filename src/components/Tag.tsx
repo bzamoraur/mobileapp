@@ -2,15 +2,18 @@ import type { Tag as TagModel, TagKind } from '@/data/schema';
 import { cn } from '@/lib/cn';
 
 const STYLES: Record<TagKind, string> = {
-  transfer: 'bg-brand-50 text-brand-700',
-  freeDay: 'bg-emerald-50 text-emerald-700',
-  family: 'bg-violet-50 text-violet-700',
-  flight: 'bg-sky-50 text-sky-700',
-  important: 'bg-amber-50 text-amber-700',
-  mealIncluded: 'bg-amber-50 text-amber-700',
-  organized: 'bg-indigo-50 text-indigo-700',
-  optional: 'bg-slate-100 text-ink-700',
-  info: 'bg-slate-100 text-ink-700',
+  flight: 'bg-sky-100 text-sky-800',
+  transfer: 'bg-sand-200 text-ink-700',
+  safari: 'bg-moss-500/15 text-moss-700',
+  freeDay: 'bg-emerald-100 text-emerald-800',
+  family: 'bg-violet-100 text-violet-800',
+  important: 'bg-amber-100 text-amber-800',
+  mealIncluded: 'bg-amber-100/70 text-amber-800',
+  beach: 'bg-cyan-100 text-cyan-800',
+  culture: 'bg-rose-100 text-rose-800',
+  experience: 'bg-brand-100 text-brand-700',
+  optional: 'bg-sand-200 text-ink-600',
+  info: 'bg-sand-200 text-ink-700',
 };
 
 export function Tag({ tag }: { tag: TagModel }) {
@@ -20,7 +23,7 @@ export function Tag({ tag }: { tag: TagModel }) {
 export function TagRow({ tags }: { tags: TagModel[] }) {
   if (tags.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1.5">
       {tags.map((t, i) => (
         <Tag key={`${t.kind}-${t.label}-${i}`} tag={t} />
       ))}

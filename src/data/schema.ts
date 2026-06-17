@@ -1,28 +1,30 @@
 import { z } from 'zod';
 
 /**
- * The single source of truth for a trip.
+ * The single source of truth for a trip (schema v2).
  *
  * Everything the app renders comes from one validated object that conforms to
- * `tripSchema`. The raw travel plan you share is transformed into a `Trip` (see
- * the `import-travel-plan` skill) and validated at build time and at runtime, so
- * a malformed plan fails loudly instead of rendering a broken screen.
+ * `tripSchema`. The raw travel plan (a Pangea booking PDF) is transformed into a
+ * `Trip` and validated at build time and at runtime, so a malformed plan fails
+ * loudly instead of rendering a broken screen.
+ *
+ * v2 generalises the model for a safari + beach trip: itinerary stops are
+ * "areas" rather than cities, flights are multi-leg journeys, each day can carry
+ * optional "extra things to see/do" (with prices), and there is a rich practical
+ * section (visa, vaccines, weather, packing, taxes).
  */
 
 // ---------------------------------------------------------------------------
 // Primitives
 // ---------------------------------------------------------------------------
 
-/** Calendar date with no time component, e.g. "2026-06-13". */
 const isoDate = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, 'Usa el formato AAAA-MM-DD')
   .refine((s) => !Number.isNaN(Date.parse(`${s}T00:00:00`)), 'Fecha inválida');
 
-/** Local wall-clock time, e.g. "09:30". */
 const localTime = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Usa el formato HH:MM');
 
-/** A safe http(s) URL — used for external links and maps. */
 const httpUrl = z
   .string()
   .url()
@@ -37,22 +39,23 @@ const imageRef = z
     'La imagen debe ser una ruta local (/img/..) o una URL https',
   );
 
-/** A phone number kept as a string to preserve "+" and spacing. */
-const phone = z.string().min(3).max(32);
+const phone = z.string().min(3).max(40);
 
 // ---------------------------------------------------------------------------
 // Shared building blocks
 // ---------------------------------------------------------------------------
 
-/** Tag kinds drive the colour/treatment of a chip. */
 export const tagKind = z.enum([
+  'flight', // Vuelo
   'transfer', // Traslado
+  'safari', // Safari / game drive
   'freeDay', // Día libre
   'family', // Ruta de la familia
-  'flight', // Vuelo
   'important', // Importante
-  'mealIncluded', // Comida incluida
-  'organized', // Visita organizada
+  'mealIncluded', // Pensión / comidas
+  'beach', // Playa
+  'culture', // Cultura / ciudad
+  'experience', // Experiencia destacada
   'optional', // Opcional
   'info', // generic
 ]);
@@ -62,41 +65,57 @@ export const tag = z.object({
   kind: tagKind,
 });
 
-/** Place categories drive the icons and grouping on the Map screen. */
+/** Place categories drive icons + grouping on the Map screen. */
 export const placeCategory = z.enum([
-  'temple', // Templos y santuarios
-  'monument', // Monumentos y miradores
-  'market', // Mercados y comida
-  'food',
-  'nature', // Naturaleza
-  'shopping', // Compras
-  'museum',
-  'neighborhood', // Barrios / zonas
+  'park', // Parque nacional / reserva
+  'crater', // Cráter / caldera
+  'wildlife', // Fauna / avistamiento
+  'nature', // Naturaleza / paisaje
+  'viewpoint', // Mirador
+  'beach', // Playa / mar
+  'town', // Ciudad / pueblo
+  'historic', // Lugar histórico / patrimonio
+  'market', // Mercado
+  'culture', // Cultura / experiencia
   'other',
 ]);
 
-/** A contact a traveller might call/message (assistance, insurer, guide...). */
+/** A contact a traveller might use (advisor, assistance, insurer...). */
 export const contact = z.object({
   label: z.string().min(1),
-  value: z.string().min(1), // phone number, email, or free text
+  value: z.string().min(1),
   channel: z.enum(['call', 'whatsapp', 'email', 'web', 'text']).default('call'),
   note: z.string().optional(),
 });
 
+/** An optional or suggested extra at a stop ("cosas adicionales que ver/hacer"). */
+export const extra = z.object({
+  name: z.string().min(1),
+  description: z.string().optional(),
+  /** True if it is an optional, payable supplement. */
+  optional: z.boolean().default(false),
+  /** Human-readable price, e.g. "18 €". */
+  price: z.string().optional(),
+  placeId: z.string().optional(),
+  mapsQuery: z.string().optional(),
+  image: imageRef.optional(),
+});
+
 // ---------------------------------------------------------------------------
-// Places (Map screen) + activities reference them by id
+// Places (Map screen)
 // ---------------------------------------------------------------------------
 
 export const place = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
-  city: z.string().min(1),
+  /** Itinerary area, e.g. "Serengeti", "Zanzíbar". */
+  area: z.string().min(1),
+  /** Top-level grouping on the Map, e.g. "Safari", "Zanzíbar". */
+  region: z.string().min(1),
   category: placeCategory,
   image: imageRef.optional(),
-  /** Long description shown in the "Info" modal. */
   info: z.string().optional(),
   address: z.string().optional(),
-  /** Free-text query used to build a Google Maps link (e.g. "Senso-ji, Tokyo"). */
   mapsQuery: z.string().min(1),
 });
 
@@ -107,98 +126,113 @@ export const place = z.object({
 export const activity = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
-  /** Drives the type chip + icon. */
   type: z
-    .enum(['sightseeing', 'food', 'shop', 'transport', 'experience', 'temple', 'viewpoint', 'free'])
+    .enum(['safari', 'sightseeing', 'transport', 'flight', 'experience', 'beach', 'culture', 'free'])
     .default('sightseeing'),
   startTime: localTime.optional(),
-  durationLabel: z.string().optional(), // e.g. "45–60 min"
+  durationLabel: z.string().optional(),
   image: imageRef.optional(),
   description: z.string().optional(),
-  /** Long detail shown in the "Info" modal. */
   info: z.string().optional(),
-  /** Link to a Place for the Maps button (preferred), or a raw query. */
   placeId: z.string().optional(),
   mapsQuery: z.string().optional(),
 });
 
 export const day = z.object({
-  /** Sequential day index within the trip (1-based). Día N. */
+  /** First day number (1-based). */
   index: z.number().int().positive(),
+  /** For multi-day stops, the last day number (e.g. 12 for "Días 9–12"). */
+  lastIndex: z.number().int().positive().optional(),
   date: isoDate,
+  /** End date for multi-day stops (inclusive). */
+  endDate: isoDate.optional(),
   title: z.string().min(1),
-  city: z.string().optional(),
+  /** Itinerary area/region label, e.g. "Serengeti central". */
+  area: z.string().optional(),
   image: imageRef.optional(),
+  gallery: z.array(imageRef).default([]),
   tags: z.array(tag).default([]),
-  /** Short summary used on cards. */
   summary: z.string().min(1),
-  /** Optional longer description for the day detail header. */
   description: z.string().optional(),
-  /** "Cómo empezar" / transit notes. */
   transitNotes: z.string().optional(),
   activities: z.array(activity).default([]),
+  /** Additional / optional things to see or do at this stop. */
+  extras: z.array(extra).default([]),
   mealsIncluded: z.array(z.string()).default([]),
-  /** Where you sleep that night (Accommodation id). */
   accommodationId: z.string().optional(),
 });
 
 // ---------------------------------------------------------------------------
-// Logistics: flights, accommodation, insurance, help
+// Flights (multi-leg journeys), accommodation, insurance
 // ---------------------------------------------------------------------------
 
 const airport = z.object({
   name: z.string().min(1),
-  code: z.string().min(2).max(4),
+  code: z.string().min(3).max(4),
   city: z.string().min(1),
 });
 
-export const flight = z.object({
-  id: z.string().min(1),
-  direction: z.enum(['outbound', 'return']),
+export const flightLeg = z.object({
   airline: z.string().min(1),
   flightNumber: z.string().min(1),
-  date: isoDate,
   from: airport,
   to: airport,
   departLocal: localTime,
   arriveLocal: localTime,
-  /** +1 if arrival is next day. */
   arrivalDayOffset: z.number().int().min(0).default(0),
-  durationLabel: z.string().optional(), // "14:00 h"
+  durationLabel: z.string().optional(),
+  aircraft: z.string().optional(),
+});
+
+export const journey = z.object({
+  id: z.string().min(1),
+  direction: z.enum(['outbound', 'return', 'domestic']),
+  date: isoDate,
+  label: z.string().optional(),
   baggage: z.string().optional(),
-  notes: z.string().optional(),
+  legs: z.array(flightLeg).min(1),
 });
 
 export const accommodation = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
-  city: z.string().min(1),
+  area: z.string().min(1),
   address: z.string().optional(),
   phone: phone.optional(),
+  website: httpUrl.optional(),
   image: imageRef.optional(),
-  /** Human-readable nights, e.g. ["19 de junio", "20 de junio"]. */
+  /** Human-readable nights, e.g. ["18 ago", "19 ago"] or ["5 noches"]. */
   nights: z.array(z.string()).default([]),
+  /** Régimen, e.g. "Pensión completa con bebidas". */
+  board: z.string().optional(),
+  roomType: z.string().optional(),
   mapsQuery: z.string().min(1),
-  checkIn: isoDate.optional(),
-  checkOut: isoDate.optional(),
+  description: z.string().optional(),
 });
 
 export const insurance = z.object({
   provider: z.string().min(1),
+  plan: z.string().optional(),
   bookingLocator: z.string().optional(),
   providerLocator: z.string().optional(),
   policyNumber: z.string().optional(),
+  /** Key coverages as bullets. */
+  coverages: z.array(z.string()).default([]),
   assistance: z.array(contact).default([]),
   email: z.string().email().optional(),
   notes: z.string().optional(),
 });
 
+// ---------------------------------------------------------------------------
+// Phrasebook, practical info
+// ---------------------------------------------------------------------------
+
 export const phrase = z.object({
   es: z.string().min(1),
-  /** Target language text (kanji/kana for Japanese). */
+  /** Target-language text (Swahili here). */
   target: z.string().min(1),
-  /** Romanised reading, shown in parentheses. */
-  romaji: z.string().optional(),
+  /** Pronunciation guide, shown in parentheses. */
+  pron: z.string().optional(),
   note: z.string().optional(),
 });
 
@@ -214,12 +248,38 @@ export const helpLink = z.object({
   description: z.string().optional(),
 });
 
-export const help = z.object({
-  /** Document/checklist bullets (passport rules, etc.). */
+export const weatherRow = z.object({
+  month: z.string().min(1),
+  minC: z.number().int(),
+  maxC: z.number().int(),
+  rainPct: z.number().int().min(0).max(100).optional(),
+});
+
+/** Rich practical section powering the Ayuda screen. */
+export const practical = z.object({
+  intro: z.string().optional(),
   documents: z.array(z.string()).default([]),
+  visa: helpLink.optional(),
+  vaccines: z.string().optional(),
+  money: z.string().optional(),
+  language: z.string().optional(),
+  timezone: z.string().optional(),
+  weather: z.array(weatherRow).default([]),
+  packing: z.array(z.string()).default([]),
+  taxes: z.array(z.string()).default([]),
   links: z.array(helpLink).default([]),
   reminders: z.array(z.string()).default([]),
   emergencyContacts: z.array(contact).default([]),
+});
+
+export const agency = z.object({
+  name: z.string().min(1),
+  advisorName: z.string().optional(),
+  advisorEmail: z.string().email().optional(),
+  advisorPhone: phone.optional(),
+  bookingRef: z.string().optional(),
+  locator: z.string().optional(),
+  phone: phone.optional(),
 });
 
 // ---------------------------------------------------------------------------
@@ -228,32 +288,32 @@ export const help = z.object({
 
 export const tripSchema = z
   .object({
-    /** Schema version so future migrations are explicit. */
-    schemaVersion: z.literal(1),
+    schemaVersion: z.literal(2),
     id: z.string().min(1),
-    title: z.string().min(1), // "Japón 2026"
+    title: z.string().min(1),
     subtitle: z.string().optional(),
+    summary: z.string().optional(),
     startDate: isoDate,
     endDate: isoDate,
-    /** IANA timezone of the destination, e.g. "Asia/Tokyo". */
     destinationTimezone: z.string().min(1),
-    /** Target-language BCP-47 code for phrase TTS, e.g. "ja-JP". */
     phraseLang: z.string().min(2),
     heroImage: imageRef.optional(),
 
+    agency: agency.optional(),
     days: z.array(day).min(1),
     places: z.array(place).default([]),
     accommodations: z.array(accommodation).default([]),
-    flights: z.array(flight).default([]),
+    journeys: z.array(journey).default([]),
     insurance: insurance.optional(),
     phrases: z.array(phraseGroup).default([]),
-    help: help.optional(),
+    practical: practical.optional(),
+    inclusions: z.array(z.string()).default([]),
+    exclusions: z.array(z.string()).default([]),
   })
   .superRefine((trip, ctx) => {
-    // Referential integrity — catch broken links at validation time.
     const placeIds = new Set(trip.places.map((p) => p.id));
     const accomIds = new Set(trip.accommodations.map((a) => a.id));
-    const dayIndexes = new Set<number>();
+    const seenIndexes = new Set<number>();
 
     if (Date.parse(trip.startDate) > Date.parse(trip.endDate)) {
       ctx.addIssue({
@@ -264,15 +324,22 @@ export const tripSchema = z
     }
 
     trip.days.forEach((d, i) => {
-      if (dayIndexes.has(d.index)) {
+      if (seenIndexes.has(d.index)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ['days', i, 'index'],
           message: `Día con índice duplicado: ${d.index}`,
         });
       }
-      dayIndexes.add(d.index);
+      seenIndexes.add(d.index);
 
+      if (d.lastIndex !== undefined && d.lastIndex < d.index) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['days', i, 'lastIndex'],
+          message: 'lastIndex no puede ser menor que index',
+        });
+      }
       if (d.accommodationId && !accomIds.has(d.accommodationId)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -280,15 +347,17 @@ export const tripSchema = z
           message: `accommodationId desconocido: ${d.accommodationId}`,
         });
       }
-      d.activities.forEach((a, j) => {
-        if (a.placeId && !placeIds.has(a.placeId)) {
+      const checkPlace = (pid: string | undefined, path: (string | number)[]) => {
+        if (pid && !placeIds.has(pid)) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            path: ['days', i, 'activities', j, 'placeId'],
-            message: `placeId desconocido: ${a.placeId}`,
+            path,
+            message: `placeId desconocido: ${pid}`,
           });
         }
-      });
+      };
+      d.activities.forEach((a, j) => checkPlace(a.placeId, ['days', i, 'activities', j, 'placeId']));
+      d.extras.forEach((e, j) => checkPlace(e.placeId, ['days', i, 'extras', j, 'placeId']));
     });
   });
 
@@ -296,17 +365,25 @@ export const tripSchema = z
 // Inferred types
 // ---------------------------------------------------------------------------
 
+/** Consumption type (after parsing): all defaulted fields are present. */
 export type Trip = z.infer<typeof tripSchema>;
+/** Authoring type (before parsing): defaulted fields may be omitted. */
+export type TripInput = z.input<typeof tripSchema>;
 export type Day = z.infer<typeof day>;
 export type Activity = z.infer<typeof activity>;
+export type Extra = z.infer<typeof extra>;
 export type Place = z.infer<typeof place>;
 export type PlaceCategory = z.infer<typeof placeCategory>;
 export type Accommodation = z.infer<typeof accommodation>;
-export type Flight = z.infer<typeof flight>;
+export type Journey = z.infer<typeof journey>;
+export type FlightLeg = z.infer<typeof flightLeg>;
 export type Insurance = z.infer<typeof insurance>;
 export type Contact = z.infer<typeof contact>;
 export type PhraseGroup = z.infer<typeof phraseGroup>;
 export type Phrase = z.infer<typeof phrase>;
-export type Help = z.infer<typeof help>;
+export type Practical = z.infer<typeof practical>;
+export type WeatherRow = z.infer<typeof weatherRow>;
+export type Agency = z.infer<typeof agency>;
 export type Tag = z.infer<typeof tag>;
 export type TagKind = z.infer<typeof tagKind>;
+export type HelpLink = z.infer<typeof helpLink>;

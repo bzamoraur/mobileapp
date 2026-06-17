@@ -14,13 +14,18 @@
   }
 
   body {
-    @apply bg-surface-muted text-ink-900 antialiased;
+    @apply bg-sand-50 text-ink-900 antialiased;
     font-family: theme('fontFamily.sans');
-    /* Avoid iOS rubber-band revealing white edges behind the app canvas. */
     overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* Respect users who prefer reduced motion. */
+  /* Editorial display headings: Fraunces with high optical sizing + soft weight. */
+  .font-display {
+    font-optical-sizing: auto;
+    font-variation-settings: 'opsz' 144, 'SOFT' 0, 'WONK' 0;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -32,9 +37,9 @@
 }
 
 @layer components {
-  /* Centered phone-width canvas with safe-area aware padding. */
+  /* Centered phone-width canvas. */
   .app-canvas {
-    @apply mx-auto w-full max-w-app bg-surface-muted;
+    @apply mx-auto w-full max-w-app bg-sand-50;
   }
 
   .card {
@@ -42,11 +47,21 @@
   }
 
   .pill {
-    @apply inline-flex items-center gap-1 rounded-pill px-3 py-1 text-sm font-medium;
+    @apply inline-flex items-center gap-1 rounded-pill px-3 py-1 text-xs font-semibold tracking-tightish;
   }
 
   /* Larger tap targets everywhere for thumb use. */
   .tap {
     @apply min-h-11 select-none;
+  }
+
+  /* Small uppercase eyebrow label. */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-ink-500;
+  }
+
+  /* Editorial gradient scrim over hero imagery. */
+  .scrim {
+    @apply absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/25 to-transparent;
   }
 }

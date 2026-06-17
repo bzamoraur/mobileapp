@@ -1,93 +1,93 @@
-# Data model — the `Trip` contract
+# Data model — the `Trip` contract (schema v2)
 
 The whole app renders from one object validated by `tripSchema` in
-`src/data/schema.ts`. This is the contract your travel plan is mapped onto. The
-schema is the source of truth; this page is a human summary.
+`src/data/schema.ts`. Author data against `TripInput` (defaulted fields may be
+omitted); the loader parses it into a `Trip` (all defaults present). The schema
+is the source of truth; this page is a human summary.
 
 ## Top level: `Trip`
 
 | Field | Required | Notes |
 | --- | --- | --- |
-| `schemaVersion` | ✓ | Always `1`. |
-| `id` | ✓ | Slug, e.g. `japon-2026`. |
-| `title` | ✓ | e.g. `Japón 2026`. |
-| `subtitle` | | e.g. `Viaje en familia`. |
+| `schemaVersion` | ✓ | Always `2`. |
+| `id`, `title` | ✓ | e.g. `tanzania-2026`, `Tanzania & Zanzíbar`. |
+| `subtitle`, `summary` | | Tagline + intro paragraph. |
 | `startDate` / `endDate` | ✓ | `AAAA-MM-DD`. `end` ≥ `start`. |
-| `destinationTimezone` | ✓ | IANA, e.g. `Asia/Tokyo`. Drives "Hoy". |
-| `phraseLang` | ✓ | BCP-47 for TTS, e.g. `ja-JP`. |
+| `destinationTimezone` | ✓ | IANA, e.g. `Africa/Dar_es_Salaam`. Drives "Hoy". |
+| `phraseLang` | ✓ | BCP-47 for TTS, e.g. `sw-TZ`. |
 | `heroImage` | | `/img/..` (bundled) or `https://..`. |
+| `agency` | | Name, advisor, booking ref/locator, phone. |
 | `days` | ✓ | ≥ 1, see below. |
-| `places` | | Map screen entries. |
-| `accommodations` | | Hotels/ryokans. |
-| `flights` | | Outbound/return. |
-| `insurance` | | Locators + 24h assistance. |
-| `phrases` | | Grouped phrasebook. |
-| `help` | | Documents, links, reminders, emergencies. |
+| `places` | | Map entries (grouped by `region`). |
+| `accommodations` | | Lodges/hotels. |
+| `journeys` | | Multi-leg flights. |
+| `insurance` | | Provider, coverages, assistance. |
+| `phrases` | | Grouped phrasebook (Swahili). |
+| `practical` | | Visa, vaccines, money, weather, packing, taxes, … |
+| `inclusions` / `exclusions` | | "Incluye / no incluye" bullets. |
 
 ## `Day`
 
-`index` (1-based, unique), `date` (`AAAA-MM-DD`), `title`, optional `city`,
-optional `image`, `tags[]`, `summary` (card text), optional `description`,
-optional `transitNotes` ("Cómo empezar"), `activities[]`, `mealsIncluded[]`,
-optional `accommodationId` (→ an `Accommodation.id`).
+`index` (1-based, unique), optional `lastIndex` (multi-day, e.g. "Días 9–12"),
+`date` and optional `endDate` (inclusive span), `title`, optional `area`,
+`image`, `gallery[]`, `tags[]`, `summary`, optional `description` /
+`transitNotes`, `activities[]`, `extras[]`, `mealsIncluded[]`, optional
+`accommodationId` (→ `Accommodation.id`).
 
-**Tags** are `{ label, kind }` where `kind` ∈ `transfer | freeDay | family |
-flight | important | mealIncluded | organized | optional | info` (drives colour).
+**Tags** are `{ label, kind }`, kind ∈ `flight | transfer | safari | freeDay |
+family | important | mealIncluded | beach | culture | experience | optional |
+info` (drives colour).
 
-## `Activity`
+## `Activity` and `Extra`
 
-`id`, `name`, `type` (`sightseeing | food | shop | transport | experience |
-temple | viewpoint | free`), optional `startTime`, `durationLabel`, `image`,
-`description`, `info` (long, shown in modal), and a maps target via either
-`placeId` (→ a `Place`, preferred) or a raw `mapsQuery`.
+- **Activity** (the planned day): `id`, `name`, `type` (`safari | sightseeing |
+  transport | flight | experience | beach | culture | free`), optional
+  `startTime`, `durationLabel`, `image`, `description`, `info` (modal), and a maps
+  target via `placeId` (preferred) or `mapsQuery`.
+- **Extra** (additional / optional things to see): `name`, optional
+  `description`, `optional` (payable supplement), `price` (e.g. `"18 €"`),
+  `placeId`/`mapsQuery`, `image`.
 
-## `Place` (Map screen)
+## `Place` (Map)
 
-`id`, `name`, `city`, `category` (`temple | monument | market | food | nature |
-shopping | museum | neighborhood | other`), optional `image`, `info`, `address`,
-and `mapsQuery` (required — free text like `Senso-ji, Tokyo`).
+`id`, `name`, `area`, `region` (top-level group, e.g. `Safari` / `Zanzíbar`),
+`category` (`park | crater | wildlife | nature | viewpoint | beach | town |
+historic | market | culture | other`), optional `image` / `info` / `address`,
+and required `mapsQuery`.
 
 ## `Accommodation`
 
-`id`, `name`, `city`, optional `address`, `phone`, `image`, `nights[]`
-(human-readable, e.g. `["19 de junio"]`), `mapsQuery`, optional `checkIn`/`checkOut`.
+`id`, `name`, `area`, optional `address` / `phone` / `website` / `image`,
+`nights[]`, optional `board` (régimen), `roomType`, required `mapsQuery`,
+optional `description`.
 
-## `Flight`
+## `Journey` (flights)
 
-`id`, `direction` (`outbound | return`), `airline`, `flightNumber`, `date`,
-`from`/`to` (`{ name, code, city }`), `departLocal`/`arriveLocal` (`HH:MM`),
-`arrivalDayOffset` (e.g. `1`), optional `durationLabel`, `baggage`, `notes`.
+`id`, `direction` (`outbound | return | domestic`), `date`, optional `label` /
+`baggage`, and `legs[]`. Each **leg**: `airline`, `flightNumber`, `from`/`to`
+(`{ name, code, city }`), `departLocal`/`arriveLocal` (`HH:MM`),
+`arrivalDayOffset`, optional `durationLabel` / `aircraft`.
 
-## `Insurance`
+## `Insurance`, `Phrase`, `Practical`, `Agency`
 
-`provider`, optional `bookingLocator`, `providerLocator`, `policyNumber`,
-`assistance[]` (contacts), optional `email`, `notes`.
-
-## `Contact`
-
-`{ label, value, channel, note? }` where `channel` ∈ `call | whatsapp | email |
-web | text`. Renders the right action button.
-
-## `PhraseGroup` / `Phrase`
-
-Group: `{ id, title, phrases[] }`. Phrase: `{ es, target, romaji?, note? }` —
-`target` is destination-language text (kana/kanji), `romaji` the reading. The
-"Reproducir" button speaks `target` in `phraseLang`.
-
-## `Help`
-
-`documents[]` (checklist bullets), `links[]` (`{ label, url, description? }`),
-`reminders[]`, `emergencyContacts[]`.
+- **Insurance**: `provider`, optional `plan` / locators / `policyNumber`,
+  `coverages[]`, `assistance[]` (contacts), optional `email` / `notes`.
+- **Phrase**: `{ es, target, pron?, note? }` grouped in `PhraseGroup`. The
+  "Reproducir" button speaks `target` in `phraseLang`.
+- **Practical**: `intro`, `documents[]`, `visa` (link), `vaccines`, `money`,
+  `language`, `timezone`, `weather[]` (`{ month, minC, maxC, rainPct? }`),
+  `packing[]`, `taxes[]`, `links[]`, `reminders[]`, `emergencyContacts[]`.
+- **Agency**: `name`, advisor name/email/phone, booking ref, locator, phone.
+- **Contact**: `{ label, value, channel, note? }`, channel ∈ `call | whatsapp |
+  email | web | text`.
 
 ## Validation guarantees
 
-`tripSchema.superRefine` enforces referential integrity at validation time:
+`tripSchema.superRefine` enforces, at load + build time:
 
-- `end` ≥ `start`.
-- unique `day.index`.
+- `end` ≥ `start`; unique `day.index`; `lastIndex` ≥ `index`.
 - every `day.accommodationId` resolves to an `Accommodation`.
-- every `activity.placeId` resolves to a `Place`.
+- every `activity.placeId` and `extra.placeId` resolves to a `Place`.
 - dates/times/URLs/images match their formats.
 
-A violation throws on load and fails `npm run validate:trip` (and CI), so broken
-data never ships.
+A violation throws on load and fails `npm run validate:trip` (and CI).

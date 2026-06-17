@@ -1,17 +1,19 @@
+import { useState, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
-import type { ReactNode } from 'react';
 
 /**
- * Image with a deterministic gradient fallback so cards look intentional even
- * before/without imagery. `seed` keeps the gradient stable per item.
+ * Image with a deterministic warm-gradient fallback. If `src` is missing OR the
+ * file fails to load (e.g. a not-yet-added /img asset), it shows the gradient,
+ * so the layout always looks intentional and real photos appear the moment they
+ * are dropped in.
  */
 const GRADIENTS = [
-  'from-slate-700 to-slate-900',
-  'from-brand-600 to-indigo-800',
-  'from-emerald-600 to-teal-800',
-  'from-rose-500 to-fuchsia-700',
-  'from-amber-500 to-orange-700',
-  'from-cyan-600 to-blue-800',
+  'from-brand-500 to-brand-800', // clay
+  'from-moss-500 to-moss-700', // acacia
+  'from-amber-500 to-brand-700', // savanna sun
+  'from-teal-600 to-cyan-800', // indian ocean
+  'from-stone-600 to-stone-900', // dusk
+  'from-orange-500 to-rose-800', // sunset
 ];
 
 function gradientFor(seed: string): string {
@@ -33,12 +35,24 @@ export function HeroImage({
   className?: string;
   children?: ReactNode;
 }) {
+  const [failed, setFailed] = useState(false);
+  const showImg = Boolean(src) && !failed;
+
   return (
-    <div className={cn('relative overflow-hidden', className)}>
-      {src ? (
-        <img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover" />
+    <div className={cn('relative overflow-hidden bg-sand-200', className)}>
+      {showImg ? (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="h-full w-full object-cover"
+        />
       ) : (
-        <div className={cn('h-full w-full bg-gradient-to-br', gradientFor(seed))} aria-hidden />
+        <div
+          className={cn('h-full w-full bg-gradient-to-br', gradientFor(seed))}
+          aria-hidden
+        />
       )}
       {children}
     </div>

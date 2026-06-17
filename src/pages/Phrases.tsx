@@ -11,17 +11,16 @@ function PhraseCard({ phrase, lang, ttsOn }: { phrase: Phrase; lang: string; tts
   async function onPlay() {
     setSpeaking(true);
     await speak(phrase.target, lang);
-    // Reset shortly after; the API has no reliable per-utterance end here.
     setTimeout(() => setSpeaking(false), 1200);
   }
 
   return (
     <article className="card p-4">
-      <p className="font-bold text-ink-900">{phrase.es}</p>
-      <p className="mt-1 text-xl text-brand-600" lang={lang}>
+      <p className="font-semibold text-ink-900">{phrase.es}</p>
+      <p className="mt-1 font-display text-2xl font-semibold tracking-tightish text-brand-600" lang={lang}>
         {phrase.target}
       </p>
-      {phrase.romaji && <p className="text-ink-500 italic">({phrase.romaji})</p>}
+      {phrase.pron && <p className="text-ink-500 italic">{phrase.pron}</p>}
       {phrase.note && <p className="mt-1 text-sm text-ink-500">{phrase.note}</p>}
       {ttsOn && (
         <button
@@ -40,21 +39,22 @@ function PhraseCard({ phrase, lang, ttsOn }: { phrase: Phrase; lang: string; tts
 
 export function Phrases() {
   const ttsOn = isTtsSupported();
-
   useEffect(() => () => stopSpeaking(), []);
 
   return (
     <div>
-      <PageHeader title="Frases útiles" />
+      <PageHeader title="Frases en swahili" />
       <p className="px-5 text-ink-500">
         {ttsOn
-          ? 'Toca «Reproducir» para que el móvil lo diga, o enseña la pantalla.'
-          : 'Enseña la pantalla para comunicarte.'}
+          ? 'Toca «Reproducir» para oírlo, o enseña la pantalla. Un “Asante sana” abre muchas puertas.'
+          : 'Enseña la pantalla para comunicarte. Un “Asante sana” abre muchas puertas.'}
       </p>
       <div className="space-y-6 p-5">
         {trip.phrases.map((group) => (
           <section key={group.id}>
-            <h2 className="mb-2 text-lg font-bold text-ink-900">{group.title}</h2>
+            <h2 className="mb-2 font-display text-2xl font-semibold tracking-tightish text-ink-900">
+              {group.title}
+            </h2>
             <div className="space-y-3">
               {group.phrases.map((p, i) => (
                 <PhraseCard key={`${group.id}-${i}`} phrase={p} lang={trip.phraseLang} ttsOn={ttsOn} />

@@ -5,7 +5,14 @@ import { formatDateRange, formatLongDate, todayInTimezone } from '@/lib/dates';
 import { HeroImage } from '@/components/HeroImage';
 import { DayCard } from '@/components/DayCard';
 import { MapsButton } from '@/components/MapsButton';
-import { BedIcon, PlaneIcon, ShieldIcon, PinIcon, ChevronRightIcon } from '@/components/icons';
+import {
+  BedIcon,
+  PlaneIcon,
+  ShieldIcon,
+  PinIcon,
+  ChevronRightIcon,
+  SunsetIcon,
+} from '@/components/icons';
 import type { ComponentType, SVGProps } from 'react';
 
 function QuickLink({
@@ -18,11 +25,14 @@ function QuickLink({
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
 }) {
   return (
-    <Link to={to} className="card tap flex flex-col items-center gap-2 px-3 py-5 text-center">
+    <Link
+      to={to}
+      className="card tap flex flex-col items-center gap-2 px-3 py-4 text-center transition active:scale-[0.98]"
+    >
       <span className="flex h-11 w-11 items-center justify-center rounded-pill bg-brand-50 text-brand-600">
         <Icon width={24} height={24} />
       </span>
-      <span className="font-semibold text-ink-900">{label}</span>
+      <span className="text-sm font-semibold text-ink-900">{label}</span>
     </Link>
   );
 }
@@ -30,32 +40,34 @@ function QuickLink({
 export function Home() {
   const today = todayInTimezone(trip.destinationTimezone);
   const current = getCurrentDay(trip);
-  // Before the trip starts, feature the first day; during, feature today.
   const featured = current ?? sortedDays(trip)[0]!;
   const tonight = getAccommodation(trip, featured.accommodationId);
-  const tomorrow = nextDay(trip, featured.index);
+  const tomorrow = nextDay(trip, featured);
 
   return (
     <div>
-      {/* Hero */}
-      <HeroImage
-        src={trip.heroImage}
-        alt={trip.title}
-        seed={trip.id}
-        className="aspect-[5/3] rounded-b-card"
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 to-ink-900/10" />
-        <div className="absolute inset-x-0 bottom-0 p-5 pt-[env(safe-area-inset-top)] text-white">
-          <h1 className="font-display text-4xl font-bold drop-shadow">{trip.title}</h1>
-          <p className="mt-1 text-white/90">{formatDateRange(trip.startDate, trip.endDate)}</p>
+      <HeroImage src={trip.heroImage} alt={trip.title} seed={trip.id} className="aspect-[4/5] rounded-b-card">
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-ink-900/20 to-ink-900/10" />
+        <div className="absolute inset-x-0 bottom-0 p-5 pt-10 text-white">
+          {trip.agency && <p className="eyebrow text-white/70">{trip.agency.name}</p>}
+          <h1 className="font-display text-[2.6rem] font-semibold leading-[1.05] tracking-tightish drop-shadow-sm">
+            {trip.title}
+          </h1>
+          {trip.subtitle && <p className="mt-1 text-white/90">{trip.subtitle}</p>}
+          <p className="mt-2 inline-flex items-center gap-1.5 text-sm text-white/80">
+            <SunsetIcon width={16} height={16} />
+            {formatDateRange(trip.startDate, trip.endDate)}
+          </p>
         </div>
       </HeroImage>
 
-      <div className="space-y-5 p-5">
+      <div className="space-y-6 p-5">
+        {trip.summary && <p className="leading-relaxed text-ink-700">{trip.summary}</p>}
+
         <section>
           <p className="mb-2 flex items-center gap-2 font-semibold text-brand-600">
             <PinIcon width={18} height={18} />
-            {current ? `Hoy, ${formatLongDate(today)}` : 'Tu primer día'}
+            {current ? `Hoy · ${formatLongDate(today)}` : 'Tu viaje empieza así'}
           </p>
           <DayCard day={featured} isToday={Boolean(current)} />
         </section>
@@ -63,11 +75,11 @@ export function Home() {
         {tonight && (
           <section className="card flex items-center justify-between gap-3 p-4">
             <div className="min-w-0">
-              <p className="flex items-center gap-1.5 text-sm font-medium uppercase tracking-wide text-ink-500">
-                <BedIcon width={16} height={16} /> Esta noche dormís en
+              <p className="eyebrow flex items-center gap-1.5">
+                <BedIcon width={15} height={15} /> Esta noche dormís en
               </p>
               <p className="mt-1 truncate text-lg font-bold text-ink-900">{tonight.name}</p>
-              <p className="text-ink-500">{tonight.city}</p>
+              <p className="text-ink-500">{tonight.area}</p>
             </div>
             <MapsButton query={tonight.mapsQuery} />
           </section>
@@ -83,13 +95,14 @@ export function Home() {
         )}
 
         <section>
+          <h2 className="eyebrow mb-2">Accesos rápidos</h2>
           <div className="grid grid-cols-2 gap-3">
-            {trip.flights.length > 0 && <QuickLink to="/vuelos" label="Vuelos" Icon={PlaneIcon} />}
-            {trip.insurance && <QuickLink to="/seguro" label="Seguro" Icon={ShieldIcon} />}
+            {trip.journeys.length > 0 && <QuickLink to="/vuelos" label="Vuelos" Icon={PlaneIcon} />}
             {trip.accommodations.length > 0 && (
               <QuickLink to="/alojamientos" label="Alojamientos" Icon={BedIcon} />
             )}
             <QuickLink to="/mapa" label="Mapa" Icon={PinIcon} />
+            {trip.insurance && <QuickLink to="/seguro" label="Seguro" Icon={ShieldIcon} />}
           </div>
         </section>
       </div>

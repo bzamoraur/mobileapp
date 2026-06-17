@@ -5,18 +5,8 @@ import { HeroImage } from './HeroImage';
 import { Modal } from './Modal';
 import { MapsButton } from './MapsButton';
 import { InfoIcon } from './icons';
+import { activityTypeMeta } from './meta';
 import { cn } from '@/lib/cn';
-
-const TYPE_LABEL: Record<Activity['type'], string> = {
-  sightseeing: 'Visita',
-  food: 'Comida',
-  shop: 'Tienda',
-  transport: 'Traslado',
-  experience: 'Experiencia',
-  temple: 'Templo',
-  viewpoint: 'Mirador',
-  free: 'Libre',
-};
 
 export function ActivityCard({ activity, trip }: { activity: Activity; trip: Trip }) {
   const [open, setOpen] = useState(false);
@@ -24,6 +14,7 @@ export function ActivityCard({ activity, trip }: { activity: Activity; trip: Tri
   const image = activity.image ?? place?.image;
   const mapsQuery = activity.mapsQuery ?? place?.mapsQuery;
   const info = activity.info ?? place?.info;
+  const { label, Icon } = activityTypeMeta[activity.type];
   const hasMedia = Boolean(image);
 
   return (
@@ -33,9 +24,11 @@ export function ActivityCard({ activity, trip }: { activity: Activity; trip: Tri
       )}
       <div className={cn(hasMedia && 'p-4')}>
         <div className="mb-1 flex flex-wrap items-center gap-2 text-sm text-ink-500">
-          <span className="pill bg-slate-100 text-ink-700">{TYPE_LABEL[activity.type]}</span>
-          {activity.durationLabel && <span>· {activity.durationLabel}</span>}
+          <span className="pill bg-sand-200 text-ink-700">
+            <Icon width={14} height={14} /> {label}
+          </span>
           {activity.startTime && <span>· {activity.startTime}</span>}
+          {activity.durationLabel && <span>· {activity.durationLabel}</span>}
         </div>
         <h3 className="text-lg font-bold leading-tight text-ink-900">{activity.name}</h3>
         {activity.description && <p className="mt-1 text-ink-700">{activity.description}</p>}

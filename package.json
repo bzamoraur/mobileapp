@@ -21,6 +21,8 @@
     "check": "npm run typecheck && npm run lint && npm run test && npm run validate:trip"
   },
   "dependencies": {
+    "@fontsource-variable/fraunces": "^5.2.9",
+    "@fontsource-variable/inter": "^5.2.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
