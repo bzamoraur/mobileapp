@@ -12,6 +12,10 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# Deploys are handled by Cloudflare Pages' Git integration: it builds and
+# publishes on every push to the production branch (docs/DEPLOYMENT.md, Option A).
+# This workflow is purely the quality gate — there is deliberately no deploy job,
+# to avoid a second, competing publish path to the same project.
 jobs:
   quality:
     name: Quality gate
@@ -35,32 +39,3 @@ jobs:
         run: npm run build
       - name: Audit (non-blocking)
         run: npm audit --omit=dev || true
-
-  deploy:
-    name: Deploy to Cloudflare Pages
-    needs: quality
-    runs-on: ubuntu-latest
-    # Only on the default branch, and only if Cloudflare secrets are configured.
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    # Map secrets to env at the job level: the `secrets` context can't be used in
-    # a step `if:` (doing so fails the whole workflow at startup), but `env` can.
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - name: Build
-        run: npm run build
-        env:
-          VITE_ACCESS_CODE_HASH: ${{ secrets.VITE_ACCESS_CODE_HASH }}
-      - name: Publish
-        # Provide CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as repo secrets
-        # to enable this step. Without them, deploy is skipped and CI still passes.
-        # (gated on the env var above, since `secrets` isn't allowed in `if:`.)
-        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
-        run: npx wrangler@3 pages deploy dist --project-name=viaje

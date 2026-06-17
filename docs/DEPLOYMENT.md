@@ -19,23 +19,30 @@ Environment variables (Pages → Settings → Environment variables):
 `public/_redirects` provides the SPA fallback (`/* → /index.html 200`) and
 `public/_headers` applies the security headers — both are copied into `dist/`.
 
-## Option A — connect the Git repo (recommended)
+## Option A — connect the Git repo (recommended, in use)
 
 1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** →
    **Connect to Git** → pick `bzamoraur/mobileapp`.
-2. Set the build command/output above and add `VITE_ACCESS_CODE_HASH`.
+2. Set the build command/output above and add `VITE_ACCESS_CODE_HASH`
+   (Settings → Variables and Secrets → Production). It's only applied to **new**
+   builds, so retry the deployment after adding it.
 3. Every push to the production branch deploys; PRs get preview URLs.
 
-## Option B — direct upload via Wrangler (CI)
+This is the path the project uses: Cloudflare builds and publishes on push, so
+the GitHub Actions workflow runs **only** the quality gate (no deploy job).
+
+## Option B — direct upload via Wrangler (manual alternative)
 
 ```bash
 npm run build
 npx wrangler pages deploy dist --project-name=viaje
 ```
 
-CI can do this with `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` secrets
-(token scoped to *Cloudflare Pages: Edit*). The provided GitHub Actions workflow
-runs the quality gate and will deploy when those secrets are present.
+Needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` (token scoped to
+*Cloudflare Pages: Edit*). Use this only if you move off Option A — running it
+against an Option A (Git-connected) project would create a second, competing
+publish path. To wire it into CI, re-add a deploy job that runs the command with
+those secrets.
 
 ## Locking it down (optional, stronger than the code gate)
 
