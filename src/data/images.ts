@@ -22,6 +22,8 @@ const tarangire = '/img/tarangire.webp';
 const manyara = '/img/lake-manyara.webp';
 const ngorongoro = '/img/ngorongoro.webp';
 const serengeti = '/img/serengeti.webp';
+const maraNorte = '/img/serengeti-norte.webp';
+const kendwa = '/img/kendwa.webp';
 
 export const img = {
   // Hero + safari (provided photos)
@@ -32,13 +34,15 @@ export const img = {
   'lake-manyara': manyara,
   ngorongoro: ngorongoro,
   'serengeti-central': serengeti,
+  'serengeti-norte': maraNorte,
   // Safari (remote, pending photos)
   olduvai: wiki('Olduvai Gorge.jpg'),
-  'serengeti-norte': wiki('Wildebeest Mara River crossing.jpg'),
   'balloon-safari': wiki('Balloon Safari, Serengeti National Park, Tanzania.jpg'),
   karatu: wiki('Coffee plantation in Tanzania.jpg'),
+  // Zanzíbar
+  kendwa: kendwa,
+  'gold-zanzibar': kendwa,
   // Zanzíbar (remote, pending photos)
-  kendwa: wiki('Kendwa Beach, Zanzibar.jpg'),
   mnemba: wiki('Mnemba Island Zanzibar.jpg'),
   jozani: wiki('Zanzibar Red Colobus.jpg'),
   'prison-island': wiki('Aldabra giant tortoise on Prison Island, Zanzibar.jpg'),
@@ -50,7 +54,6 @@ export const img = {
   burungue: tarangire,
   kitela: ngorongoro,
   lahia: serengeti,
-  'mara-under-canvas': wiki('Wildebeest Mara River crossing.jpg'),
-  'gold-zanzibar': wiki('Kendwa Beach, Zanzibar.jpg'),
+  'mara-under-canvas': maraNorte,
   'zanzibar-serena': wiki('Stone Town, Zanzibar.jpg'),
 };

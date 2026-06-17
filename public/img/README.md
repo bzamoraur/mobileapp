@@ -16,17 +16,24 @@ Put a file here and point its slug at it in `src/data/images.ts`
 node -e "require('sharp')('in.jpg').resize(1600).webp({quality:82}).toFile('public/img/serengeti-central.webp')"
 ```
 
-### 2. Auto-search the web and save (no API key)
-`scripts/fetch-images.mjs` searches **Openverse** (CC-licensed) with a
-**Wikimedia Commons** fallback, downloads the best match, optimises it to WebP,
-records attribution in `CREDITS.md`, and repoints the slug in `images.ts`:
+### 2. Auto-search the web and save
+`scripts/fetch-images.mjs` searches for the best match, downloads it, optimises
+it to WebP, records attribution in `CREDITS.md`, and repoints the slug in
+`images.ts`. Sources, in order: **Unsplash** (if `UNSPLASH_ACCESS_KEY` is set) →
+**Openverse** (CC-licensed, no key) → **Wikimedia Commons** (no key).
 
 ```bash
+# Best quality: set your Unsplash Access Key (see .env.example), then:
+export UNSPLASH_ACCESS_KEY=xxxxxxxx
 npm run fetch:images                      # every slug still missing
 npm run fetch:images -- serengeti-norte   # just one slug
 npm run fetch:images -- jozani "Zanzibar red colobus monkey"   # custom query
 npm run fetch:images -- --force           # re-fetch everything
 ```
+
+Get an Unsplash Access Key at <https://unsplash.com/oauth/applications> (create an
+app → copy **Access Key**). The script honours Unsplash's API guidelines
+(triggers the download endpoint, stores photographer attribution in `CREDITS.md`).
 
 > Run this **where the network is open** (your machine / CI). The hosted build
 > sandbox blocks image hosts, so it can only run locally. Review the results and

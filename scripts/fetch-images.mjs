@@ -76,6 +76,42 @@ async function exists(p) {
 }
 
 const UA = 'ViajeApp/1.0 (personal travel app; image fetch script)';
+const UNSPLASH = process.env.UNSPLASH_ACCESS_KEY;
+
+async function searchUnsplash(query) {
+  if (!UNSPLASH) return [];
+  const url =
+    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}` +
+    `&per_page=5&orientation=landscape&content_filter=high`;
+  const res = await fetch(url, {
+    headers: { 'User-Agent': UA, Authorization: `Client-ID ${UNSPLASH}`, 'Accept-Version': 'v1' },
+  });
+  if (!res.ok) throw new Error(`Unsplash ${res.status}`);
+  const json = await res.json();
+  return (json.results ?? []).map((r) => ({
+    // Use the raw URL with explicit sizing per Unsplash's dynamic-image API.
+    url: `${r.urls.raw}&w=1600&fit=max&q=80&fm=jpg`,
+    title: r.description || r.alt_description || query,
+    author: r.user?.name,
+    license: 'Unsplash License',
+    source: r.links?.html,
+    // Per Unsplash API Guidelines: trigger a download event when used.
+    downloadLocation: r.links?.download_location,
+  }));
+}
+
+/** Unsplash requires pinging download_location when a photo is used. */
+async function triggerUnsplashDownload(loc) {
+  if (!loc || !UNSPLASH) return;
+  try {
+    await fetch(`${loc}${loc.includes('?') ? '&' : '?'}client_id=${UNSPLASH}`, {
+      headers: { 'Accept-Version': 'v1' },
+    });
+  } catch {
+    /* non-fatal */
+  }
+}
+
 
 async function searchOpenverse(query) {
   const url = `https://api.openverse.org/v1/images/?q=${encodeURIComponent(query)}&page_size=8&license_type=commercial`;
@@ -147,13 +183,15 @@ for (const slug of slugs) {
   }
   const query = customQuery ?? QUERIES[slug] ?? slug;
   let saved = false;
-  for (const search of [searchOpenverse, searchWikimedia]) {
+  // Unsplash first (best quality) when a key is set, then no-key fallbacks.
+  for (const search of [searchUnsplash, searchOpenverse, searchWikimedia]) {
     try {
       const results = await search(query);
       for (const c of results) {
         if (!c.url) continue;
         try {
           await downloadToWebp(c.url, out);
+          await triggerUnsplashDownload(c.downloadLocation);
           await recordCredit(slug, c);
           await repointImagesTs(slug);
           console.log(`✓ ${slug}  ←  ${c.license ?? 'CC'}  (${search.name})`);
@@ -164,7 +202,7 @@ for (const slug of slugs) {
           /* try next result */
         }
       }
-    } catch (e) {
+    } catch {
       /* try next source */
     }
     if (saved) break;
