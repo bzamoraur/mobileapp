@@ -96,6 +96,34 @@ export const CheckIcon = (p: IconProps) => (
   </svg>
 );
 
+export const PlusIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+);
+
+/** Star outline; pass `fill="currentColor"` to render it filled. */
+export const StarIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M12 3.5l2.6 5.3 5.9.86-4.25 4.14 1 5.87L12 17l-5.25 2.74 1-5.87L3.5 9.66l5.9-.86L12 3.5Z" />
+  </svg>
+);
+
+export const PencilIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M4 20h4L19 9l-4-4L4 16v4Z" />
+    <path d="m13.5 6.5 4 4" />
+  </svg>
+);
+
+export const WalletIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H17a1 1 0 0 1 1 1v1.5" />
+    <rect x="3.5" y="7.5" width="17" height="11" rx="2.5" />
+    <circle cx="16.5" cy="13" r="1.2" />
+  </svg>
+);
+
 export const ChevronLeftIcon = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="m15 6-6 6 6 6" />

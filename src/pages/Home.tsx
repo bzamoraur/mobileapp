@@ -12,6 +12,7 @@ import {
   ShieldIcon,
   PinIcon,
   PawIcon,
+  WalletIcon,
   ChevronRightIcon,
   SunsetIcon,
 } from '@/components/icons';
@@ -109,6 +110,7 @@ export function Home() {
             {trip.features.wildlifeTracker && trip.wildlife.length > 0 && (
               <QuickLink to="/fauna" label="Fauna" Icon={PawIcon} />
             )}
+            {trip.features.expenses && <QuickLink to="/gastos" label="Gastos" Icon={WalletIcon} />}
             {trip.insurance && <QuickLink to="/seguro" label="Seguro" Icon={ShieldIcon} />}
           </div>
         </section>

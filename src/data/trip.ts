@@ -829,6 +829,16 @@ export const trip: TripInput = {
       'Botiquín: antihistamínicos, analgésicos, antimosquitos, vendas y protector solar.',
       'Equipaje blando y ligero: máx. ~15 kg recomendado para la avioneta.',
     ],
+    tipping:
+      'Las propinas forman parte de la cultura del safari y se agradecen mucho. Orientación habitual: 15–20 USD/día para el guía-conductor (por grupo), unos 10 USD/día para el personal del lodge (bote común) y 1–2 USD por servicio puntual. En restaurantes, redondear o ~10 %. Lleva billetes pequeños en USD.',
+    etiquette: [
+      'Saluda con «Jambo» o «Karibu»: un saludo amable abre muchas puertas.',
+      'Viste con respeto en pueblos y en Stone Town (hombros y rodillas cubiertos), sobre todo en zonas musulmanas de Zanzíbar.',
+      'Pide permiso antes de fotografiar a personas; a veces piden una pequeña propina.',
+      'Usa la mano derecha para saludar, dar y recibir.',
+      'Quítate los zapatos al entrar en casas y mezquitas.',
+      'Evita las muestras de afecto en público en Zanzíbar.',
+    ],
     taxes: [
       'Visado de Tanzania: 50 USD por persona (online).',
       'Seguro OBLIGATORIO de Zanzíbar: 44 USD/persona, con código QR a presentar en inmigración.',

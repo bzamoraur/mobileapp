@@ -266,6 +266,8 @@ export const practical = z.object({
   timezone: z.string().optional(),
   weather: z.array(weatherRow).default([]),
   packing: z.array(z.string()).default([]),
+  etiquette: z.array(z.string()).default([]),
+  tipping: z.string().optional(),
   taxes: z.array(z.string()).default([]),
   links: z.array(helpLink).default([]),
   reminders: z.array(z.string()).default([]),
@@ -310,6 +312,8 @@ export const featureFlags = z
     countdown: z.boolean().default(true),
     packingChecklist: z.boolean().default(true),
     wildlifeTracker: z.boolean().default(true),
+    journal: z.boolean().default(true),
+    expenses: z.boolean().default(true),
   })
   .default({});
 

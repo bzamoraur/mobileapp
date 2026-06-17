@@ -139,6 +139,22 @@ export function Help() {
           </Section>
         )}
 
+        {(p?.tipping || (p?.etiquette && p.etiquette.length > 0)) && (
+          <Section title="Cultura y propinas" icon={<InfoIcon width={22} height={22} className="text-brand-600" />}>
+            {p?.tipping && <p className="card p-4 text-ink-700">{p.tipping}</p>}
+            {p?.etiquette && p.etiquette.length > 0 && (
+              <ul className="card space-y-2 p-4">
+                {p.etiquette.map((e, i) => (
+                  <li key={i} className="flex gap-2 text-ink-700">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-moss-500" aria-hidden />
+                    {e}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Section>
+        )}
+
         {p?.taxes && p.taxes.length > 0 && (
           <Section title="Tasas y pagos">
             <ul className="card space-y-2 p-4">

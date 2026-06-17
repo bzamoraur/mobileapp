@@ -49,6 +49,8 @@ describe('tripSchema', () => {
     expect(base.features.countdown).toBe(true);
     expect(base.features.packingChecklist).toBe(true);
     expect(base.features.wildlifeTracker).toBe(true);
+    expect(base.features.journal).toBe(true);
+    expect(base.features.expenses).toBe(true);
   });
 
   it('defaults wildlife to an empty list when omitted', () => {
