@@ -5,11 +5,13 @@ import { formatDateRange, formatLongDate, todayInTimezone } from '@/lib/dates';
 import { HeroImage } from '@/components/HeroImage';
 import { DayCard } from '@/components/DayCard';
 import { MapsButton } from '@/components/MapsButton';
+import { TripCountdown } from '@/components/TripCountdown';
 import {
   BedIcon,
   PlaneIcon,
   ShieldIcon,
   PinIcon,
+  PawIcon,
   ChevronRightIcon,
   SunsetIcon,
 } from '@/components/icons';
@@ -62,6 +64,8 @@ export function Home() {
       </HeroImage>
 
       <div className="space-y-6 p-5">
+        <TripCountdown />
+
         {trip.summary && <p className="leading-relaxed text-ink-700">{trip.summary}</p>}
 
         <section>
@@ -102,6 +106,9 @@ export function Home() {
               <QuickLink to="/alojamientos" label="Alojamientos" Icon={BedIcon} />
             )}
             <QuickLink to="/mapa" label="Mapa" Icon={PinIcon} />
+            {trip.features.wildlifeTracker && trip.wildlife.length > 0 && (
+              <QuickLink to="/fauna" label="Fauna" Icon={PawIcon} />
+            )}
             {trip.insurance && <QuickLink to="/seguro" label="Seguro" Icon={ShieldIcon} />}
           </div>
         </section>

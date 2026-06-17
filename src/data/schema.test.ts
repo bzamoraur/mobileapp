@@ -44,4 +44,29 @@ describe('tripSchema', () => {
     bad.startDate = '17-08-2026';
     expect(tripSchema.safeParse(bad).success).toBe(false);
   });
+
+  it('defaults feature flags to on when omitted', () => {
+    expect(base.features.countdown).toBe(true);
+    expect(base.features.packingChecklist).toBe(true);
+    expect(base.features.wildlifeTracker).toBe(true);
+  });
+
+  it('defaults wildlife to an empty list when omitted', () => {
+    expect(base.wildlife).toEqual([]);
+  });
+
+  it('parses wildlife species, defaulting big5 to false', () => {
+    const res = tripSchema.safeParse({
+      ...sampleTrip,
+      wildlife: [
+        { id: 'lion', name: 'León', nameLocal: 'Simba', big5: true },
+        { id: 'zebra', name: 'Cebra' },
+      ],
+    });
+    expect(res.success).toBe(true);
+    if (res.success) {
+      expect(res.data.wildlife[0]!.big5).toBe(true);
+      expect(res.data.wildlife[1]!.big5).toBe(false);
+    }
+  });
 });

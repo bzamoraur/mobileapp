@@ -5,6 +5,7 @@ import { Days } from '@/pages/Days';
 import { DayDetail } from '@/pages/DayDetail';
 import { MapPage } from '@/pages/MapPage';
 import { Phrases } from '@/pages/Phrases';
+import { Wildlife } from '@/pages/Wildlife';
 import { Help } from '@/pages/Help';
 import { Flights } from '@/pages/Flights';
 import { Insurance } from '@/pages/Insurance';
@@ -21,6 +22,7 @@ export function App() {
           <Route path="dias/:index" element={<DayDetail />} />
           <Route path="mapa" element={<MapPage />} />
           <Route path="frases" element={<Phrases />} />
+          <Route path="fauna" element={<Wildlife />} />
           <Route path="ayuda" element={<Help />} />
           <Route path="vuelos" element={<Flights />} />
           <Route path="seguro" element={<Insurance />} />

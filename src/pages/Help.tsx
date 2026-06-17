@@ -2,6 +2,7 @@ import { trip } from '@/data';
 import type { ReactNode } from 'react';
 import { PageHeader } from '@/components/PageHeader';
 import { ContactButton } from '@/components/ContactButton';
+import { PackingChecklist } from '@/components/PackingChecklist';
 import {
   GlobeIcon,
   InfoIcon,
@@ -123,14 +124,18 @@ export function Help() {
 
         {p?.packing && p.packing.length > 0 && (
           <Section title="Qué llevar de safari">
-            <ul className="card space-y-2 p-4">
-              {p.packing.map((item, i) => (
-                <li key={i} className="flex gap-2 text-ink-700">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden />
-                  {item}
-                </li>
-              ))}
-            </ul>
+            {trip.features.packingChecklist ? (
+              <PackingChecklist items={p.packing} tripId={trip.id} />
+            ) : (
+              <ul className="card space-y-2 p-4">
+                {p.packing.map((item, i) => (
+                  <li key={i} className="flex gap-2 text-ink-700">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
           </Section>
         )}
 

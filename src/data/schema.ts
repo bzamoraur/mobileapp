@@ -283,6 +283,37 @@ export const agency = z.object({
 });
 
 // ---------------------------------------------------------------------------
+// On-device features: wildlife tracker + per-trip feature switches
+// ---------------------------------------------------------------------------
+
+/** A species the traveller can tick off as "spotted" (state is saved on-device). */
+export const wildlifeSpecies = z.object({
+  id: z.string().min(1),
+  /** Common name in the UI language, e.g. "León". */
+  name: z.string().min(1),
+  /** Name in the destination language (Swahili here), e.g. "Simba". */
+  nameLocal: z.string().optional(),
+  /** True for the classic "Big Five". */
+  big5: z.boolean().default(false),
+  /** Where/when it is most likely to be seen. */
+  note: z.string().optional(),
+});
+
+/**
+ * Per-trip feature switches. Optional features default ON; a generated trip can
+ * set any to `false` to hide it. Data-driven features additionally require their
+ * data (e.g. the wildlife tracker only shows when `wildlife` is non-empty), so
+ * the default-on flags are safe for trips that simply omit the data.
+ */
+export const featureFlags = z
+  .object({
+    countdown: z.boolean().default(true),
+    packingChecklist: z.boolean().default(true),
+    wildlifeTracker: z.boolean().default(true),
+  })
+  .default({});
+
+// ---------------------------------------------------------------------------
 // Trip (root)
 // ---------------------------------------------------------------------------
 
@@ -307,6 +338,8 @@ export const tripSchema = z
     insurance: insurance.optional(),
     phrases: z.array(phraseGroup).default([]),
     practical: practical.optional(),
+    features: featureFlags,
+    wildlife: z.array(wildlifeSpecies).default([]),
     inclusions: z.array(z.string()).default([]),
     exclusions: z.array(z.string()).default([]),
   })
@@ -387,3 +420,5 @@ export type Agency = z.infer<typeof agency>;
 export type Tag = z.infer<typeof tag>;
 export type TagKind = z.infer<typeof tagKind>;
 export type HelpLink = z.infer<typeof helpLink>;
+export type WildlifeSpecies = z.infer<typeof wildlifeSpecies>;
+export type FeatureFlags = z.infer<typeof featureFlags>;

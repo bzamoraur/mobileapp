@@ -860,6 +860,22 @@ export const trip: TripInput = {
     ],
   },
 
+  wildlife: [
+    { id: 'lion', name: 'León', nameLocal: 'Simba', big5: true, note: 'Serengeti y Ngorongoro; más activos al amanecer y al atardecer.' },
+    { id: 'leopard', name: 'Leopardo', nameLocal: 'Chui', big5: true, note: 'Esquivo; busca en los árboles del Serengeti y Tarangire.' },
+    { id: 'elephant', name: 'Elefante', nameLocal: 'Tembo', big5: true, note: 'Grandes manadas en Tarangire y el Serengeti.' },
+    { id: 'buffalo', name: 'Búfalo', nameLocal: 'Nyati', big5: true, note: 'Común en Manyara, Ngorongoro y el Serengeti.' },
+    { id: 'rhino', name: 'Rinoceronte', nameLocal: 'Faru', big5: true, note: 'El más difícil: rinoceronte negro en el cráter del Ngorongoro.' },
+    { id: 'cheetah', name: 'Guepardo', nameLocal: 'Duma', note: 'Llanuras abiertas del Serengeti; caza durante el día.' },
+    { id: 'giraffe', name: 'Jirafa', nameLocal: 'Twiga', note: 'Animal nacional de Tanzania; presente por todo el safari.' },
+    { id: 'zebra', name: 'Cebra', nameLocal: 'Punda milia', note: 'En enormes manadas durante la Gran Migración.' },
+    { id: 'wildebeest', name: 'Ñu', nameLocal: 'Nyumbu', note: 'Protagonista de los cruces del río Mara.' },
+    { id: 'hippo', name: 'Hipopótamo', nameLocal: 'Kiboko', note: 'En charcas y ríos; busca la "hippo pool" del Serengeti.' },
+    { id: 'crocodile', name: 'Cocodrilo', nameLocal: 'Mamba', note: 'Acecha en los cruces del río Mara.' },
+    { id: 'hyena', name: 'Hiena', nameLocal: 'Fisi', note: 'Hiena manchada; muy activa al anochecer.' },
+    { id: 'flamingo', name: 'Flamenco', note: 'Tiñe de rosa el lago Manyara y los lagos del Valle del Rift.' },
+  ],
+
   inclusions: [
     'Vuelos internacionales y domésticos (Ethiopian Airlines) con tasas incluidas.',
     'Vuelo en avioneta entre el Serengeti norte y Zanzíbar (vía Arusha).',
