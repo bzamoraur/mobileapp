@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Viaje">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cb7950"/>
+      <stop offset="1" stop-color="#883c24"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#g)"/>
+  <!-- Glyph kept within the central safe area -->
+  <circle cx="256" cy="196" r="46" fill="#f4ddd1" opacity="0.95"/>
+  <path fill="#3a452c" d="M250 300V224h12v76h-12Z"/>
+  <path fill="#3a452c" d="M256 176c-44 0-80 22-80 44 0 8 7 13 17 13 12 0 18-8 33-8s22 8 30 8 15-8 30-8 22 8 33 8c10 0 17-5 17-13 0-22-36-44-80-44Z"/>
+  <path fill="#3a452c" d="M176 312h160v12H176z"/>
+</svg>
