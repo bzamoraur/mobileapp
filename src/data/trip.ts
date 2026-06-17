@@ -829,6 +829,16 @@ export const trip: TripInput = {
       'Botiquín: antihistamínicos, analgésicos, antimosquitos, vendas y protector solar.',
       'Equipaje blando y ligero: máx. ~15 kg recomendado para la avioneta.',
     ],
+    tipping:
+      'Las propinas forman parte de la cultura del safari y se agradecen mucho. Orientación habitual: 15–20 USD/día para el guía-conductor (por grupo), unos 10 USD/día para el personal del lodge (bote común) y 1–2 USD por servicio puntual. En restaurantes, redondear o ~10 %. Lleva billetes pequeños en USD.',
+    etiquette: [
+      'Saluda con «Jambo» o «Karibu»: un saludo amable abre muchas puertas.',
+      'Viste con respeto en pueblos y en Stone Town (hombros y rodillas cubiertos), sobre todo en zonas musulmanas de Zanzíbar.',
+      'Pide permiso antes de fotografiar a personas; a veces piden una pequeña propina.',
+      'Usa la mano derecha para saludar, dar y recibir.',
+      'Quítate los zapatos al entrar en casas y mezquitas.',
+      'Evita las muestras de afecto en público en Zanzíbar.',
+    ],
     taxes: [
       'Visado de Tanzania: 50 USD por persona (online).',
       'Seguro OBLIGATORIO de Zanzíbar: 44 USD/persona, con código QR a presentar en inmigración.',
@@ -859,6 +869,22 @@ export const trip: TripInput = {
       { label: 'Pangea · Asistencia 24 h', value: '+34 910 837 976', channel: 'call' },
     ],
   },
+
+  wildlife: [
+    { id: 'lion', name: 'León', nameLocal: 'Simba', big5: true, note: 'Serengeti y Ngorongoro; más activos al amanecer y al atardecer.' },
+    { id: 'leopard', name: 'Leopardo', nameLocal: 'Chui', big5: true, note: 'Esquivo; busca en los árboles del Serengeti y Tarangire.' },
+    { id: 'elephant', name: 'Elefante', nameLocal: 'Tembo', big5: true, note: 'Grandes manadas en Tarangire y el Serengeti.' },
+    { id: 'buffalo', name: 'Búfalo', nameLocal: 'Nyati', big5: true, note: 'Común en Manyara, Ngorongoro y el Serengeti.' },
+    { id: 'rhino', name: 'Rinoceronte', nameLocal: 'Faru', big5: true, note: 'El más difícil: rinoceronte negro en el cráter del Ngorongoro.' },
+    { id: 'cheetah', name: 'Guepardo', nameLocal: 'Duma', note: 'Llanuras abiertas del Serengeti; caza durante el día.' },
+    { id: 'giraffe', name: 'Jirafa', nameLocal: 'Twiga', note: 'Animal nacional de Tanzania; presente por todo el safari.' },
+    { id: 'zebra', name: 'Cebra', nameLocal: 'Punda milia', note: 'En enormes manadas durante la Gran Migración.' },
+    { id: 'wildebeest', name: 'Ñu', nameLocal: 'Nyumbu', note: 'Protagonista de los cruces del río Mara.' },
+    { id: 'hippo', name: 'Hipopótamo', nameLocal: 'Kiboko', note: 'En charcas y ríos; busca la "hippo pool" del Serengeti.' },
+    { id: 'crocodile', name: 'Cocodrilo', nameLocal: 'Mamba', note: 'Acecha en los cruces del río Mara.' },
+    { id: 'hyena', name: 'Hiena', nameLocal: 'Fisi', note: 'Hiena manchada; muy activa al anochecer.' },
+    { id: 'flamingo', name: 'Flamenco', note: 'Tiñe de rosa el lago Manyara y los lagos del Valle del Rift.' },
+  ],
 
   inclusions: [
     'Vuelos internacionales y domésticos (Ethiopian Airlines) con tasas incluidas.',

@@ -7,6 +7,7 @@ import { ActivityCard } from '@/components/ActivityCard';
 import { ExtrasList } from '@/components/ExtrasList';
 import { MapsButton } from '@/components/MapsButton';
 import { PageHeader } from '@/components/PageHeader';
+import { DayNotes } from '@/components/DayNotes';
 import { BedIcon, BinocularsIcon, InfoIcon } from '@/components/icons';
 import { capitalize, formatDayMonth, formatLongDate } from '@/lib/dates';
 
@@ -97,6 +98,8 @@ export function DayDetail() {
             <MapsButton query={accommodation.mapsQuery} />
           </section>
         )}
+
+        {trip.features.journal && <DayNotes dayIndex={day.index} />}
       </div>
     </div>
   );
