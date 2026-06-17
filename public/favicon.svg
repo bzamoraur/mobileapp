@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Viaje">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#g)"/>
+  <!-- Location pin -->
+  <path fill="#fff" d="M256 104c-66 0-119 53-119 119 0 84 100 168 113 179a9 9 0 0 0 12 0c13-11 113-95 113-179 0-66-53-119-119-119Z"/>
+  <circle cx="256" cy="223" r="46" fill="#1d4ed8"/>
+</svg>

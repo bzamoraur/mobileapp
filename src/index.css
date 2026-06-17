@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-surface-muted text-ink-900 antialiased;
+    font-family: theme('fontFamily.sans');
+    /* Avoid iOS rubber-band revealing white edges behind the app canvas. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Respect users who prefer reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Centered phone-width canvas with safe-area aware padding. */
+  .app-canvas {
+    @apply mx-auto w-full max-w-app bg-surface-muted;
+  }
+
+  .card {
+    @apply rounded-card bg-surface shadow-card;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1 rounded-pill px-3 py-1 text-sm font-medium;
+  }
+
+  /* Larger tap targets everywhere for thumb use. */
+  .tap {
+    @apply min-h-11 select-none;
+  }
+}
