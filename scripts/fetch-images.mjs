@@ -55,6 +55,20 @@ const QUERIES = {
   'stone-town': 'Stone Town Zanzibar street architecture',
   forodhani: 'Forodhani Gardens Stone Town night market',
   'spice-farm': 'Zanzibar spice farm cloves',
+  // Fauna — Big Five detail cards (portraits in the safari context).
+  'wildlife-lion': 'African lion male Serengeti savanna',
+  'wildlife-leopard': 'African leopard in acacia tree Serengeti',
+  'wildlife-elephant': 'African elephant Tanzania savanna',
+  'wildlife-buffalo': 'African cape buffalo Serengeti',
+  'wildlife-rhino': 'black rhinoceros Africa savanna',
+  'wildlife-cheetah': 'cheetah Serengeti Tanzania',
+  'wildlife-giraffe': 'Masai giraffe acacia Tanzania',
+  'wildlife-zebra': 'zebra herd Serengeti Tanzania',
+  'wildlife-wildebeest': 'wildebeest great migration Serengeti',
+  'wildlife-hippo': 'hippopotamus river Africa',
+  'wildlife-crocodile': 'Nile crocodile river Africa',
+  'wildlife-hyena': 'spotted hyena Serengeti Africa',
+  'wildlife-flamingo': 'flamingos Lake Natron Tanzania pink',
 };
 
 const args = process.argv.slice(2);

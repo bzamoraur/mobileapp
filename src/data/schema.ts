@@ -117,6 +117,10 @@ export const place = z.object({
   info: z.string().optional(),
   address: z.string().optional(),
   mapsQuery: z.string().min(1),
+  /** Latitude (WGS84) for the interactive map marker. Optional + backward-compatible. */
+  lat: z.number().min(-90).max(90).optional(),
+  /** Longitude (WGS84) for the interactive map marker. Optional + backward-compatible. */
+  lng: z.number().min(-180).max(180).optional(),
 });
 
 // ---------------------------------------------------------------------------
@@ -316,6 +320,12 @@ export const wildlifeSpecies = z.object({
   big5: z.boolean().default(false),
   /** Where/when it is most likely to be seen. */
   note: z.string().optional(),
+  /** Portrait for the detail card (gradient-falls-back if absent). */
+  image: imageRef.optional(),
+  /** One-line description shown in the detail card. */
+  about: z.string().optional(),
+  /** A "¿Sabías que…?" fun fact for the detail card. */
+  fact: z.string().optional(),
 });
 
 /**

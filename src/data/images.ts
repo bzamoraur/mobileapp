@@ -44,6 +44,22 @@ export const img = {
   'stone-town': stoneTown,
   forodhani: '/img/forodhani.webp',
   'spice-farm': '/img/spice-farm.webp',
+  // Fauna (Big Five detail cards) — referenced by trip.wildlife. These files are
+  // fetched later (scripts/fetch-images.mjs); until then HeroImage shows a themed
+  // gradient, so the cards always look intentional.
+  'wildlife-lion': '/img/wildlife-lion.webp',
+  'wildlife-leopard': '/img/wildlife-leopard.webp',
+  'wildlife-elephant': '/img/wildlife-elephant.webp',
+  'wildlife-buffalo': '/img/wildlife-buffalo.webp',
+  'wildlife-rhino': '/img/wildlife-rhino.webp',
+  'wildlife-cheetah': '/img/wildlife-cheetah.webp',
+  'wildlife-giraffe': '/img/wildlife-giraffe.webp',
+  'wildlife-zebra': '/img/wildlife-zebra.webp',
+  'wildlife-wildebeest': '/img/wildlife-wildebeest.webp',
+  'wildlife-hippo': '/img/wildlife-hippo.webp',
+  'wildlife-crocodile': '/img/wildlife-crocodile.webp',
+  'wildlife-hyena': '/img/wildlife-hyena.webp',
+  'wildlife-flamingo': '/img/wildlife-flamingo.webp',
   // Hotels — themed regional scenery
   rivertrees: arushaKili,
   burungue: tarangire,

@@ -37,10 +37,23 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,jpg,jpeg,webp,woff2,json}'],
-        // Map tiles / external links open in the system browser, so we only need
-        // to runtime-cache same-origin media that isn't precached.
         runtimeCaching: [
           {
+            // Interactive-map tiles (OpenStreetMap). CacheFirst so every tile the
+            // user pans over once stays available offline (load on wifi → works on
+            // safari). Must precede the generic image rule below, since tiles are
+            // also `destination: 'image'` and Workbox uses the first match.
+            urlPattern: /^https:\/\/[abc]\.tile\.openstreetmap\.org\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'osm-tiles',
+              expiration: { maxEntries: 600, maxAgeSeconds: 60 * 60 * 24 * 60 },
+              // Tiles are cross-origin: allow opaque (0) and 200 responses.
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            // Same-origin trip media that isn't precached.
             urlPattern: ({ request }) => request.destination === 'image',
             handler: 'CacheFirst',
             options: {

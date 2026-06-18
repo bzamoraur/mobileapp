@@ -3,9 +3,16 @@ import { trip } from '@/data';
 import type { Place, PlaceCategory } from '@/data/schema';
 import { PageHeader } from '@/components/PageHeader';
 import { PlaceCard } from '@/components/PlaceCard';
+import { PlacesMap } from '@/components/PlacesMap';
 import { placeCategoryMeta } from '@/components/meta';
 import { SearchIcon, PinIcon } from '@/components/icons';
 import { cn } from '@/lib/cn';
+
+/** Pin colours used in the map legend, mirrored from `lib/leafletIcon`. */
+const REGION_PIN_COLOR: Record<string, string> = {
+  Safari: '#a64d2c', // brand-600
+  Zanzíbar: '#4a5838', // moss-600
+};
 
 export function MapPage() {
   const [query, setQuery] = useState('');
@@ -41,12 +48,46 @@ export function MapPage() {
     return map;
   }, [filtered]);
 
+  // Places that can be mapped (have coordinates), reflecting the active filters.
+  const mappable = useMemo(
+    () => filtered.filter((p) => typeof p.lat === 'number' && typeof p.lng === 'number'),
+    [filtered],
+  );
+  // Regions present among the mapped points, for the legend.
+  const mappedRegions = useMemo(() => {
+    const set = new Set<string>();
+    mappable.forEach((p) => set.add(p.region));
+    return [...set];
+  }, [mappable]);
+
   return (
     <div>
       <PageHeader title="Mapa de lugares" />
       <p className="px-5 text-ink-500">
-        Todos los sitios del viaje. Toca «Info» o ábrelos en Google Maps.
+        Explora el mapa o busca un sitio. Funciona sin conexión una vez cargado.
       </p>
+
+      {mappable.length > 0 && (
+        <div className="px-5 pt-4">
+          {/* The map re-fits its bounds reactively when the matched set changes. */}
+          <div className="h-[58vh] max-h-[32rem] min-h-[20rem] overflow-hidden rounded-card shadow-card">
+            <PlacesMap places={mappable} />
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-500">
+            {mappedRegions.map((region) => (
+              <span key={region} className="inline-flex items-center gap-1.5">
+                <span
+                  aria-hidden
+                  className="h-2.5 w-2.5 rounded-full"
+                  style={{ backgroundColor: REGION_PIN_COLOR[region] ?? '#a64d2c' }}
+                />
+                {region}
+              </span>
+            ))}
+            <span className="ml-auto">Toca un pin para abrirlo en Maps</span>
+          </div>
+        </div>
+      )}
 
       <div className="sticky top-0 z-10 space-y-3 bg-sand-50/90 p-5 pt-3 backdrop-blur">
         <div className="relative">

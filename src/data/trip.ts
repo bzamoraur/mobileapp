@@ -210,6 +210,8 @@ export const trip: TripInput = {
       image: img['arusha'],
       info: 'La "capital del safari" de Tanzania y puerta de entrada al Serengeti y al Kilimanjaro. Ciudad animada con su emblemático Clock Tower, talleres masái y vistas al monte Meru.',
       mapsQuery: 'Arusha, Tanzania',
+      lat: -3.3869,
+      lng: 36.683,
     },
     {
       id: 'mount-meru',
@@ -220,6 +222,8 @@ export const trip: TripInput = {
       image: img['mount-meru'],
       info: 'El segundo pico más alto de Tanzania (4.566 m), telón de fondo de Arusha, dentro del Parque Nacional de Arusha.',
       mapsQuery: 'Mount Meru, Arusha National Park',
+      lat: -3.2456,
+      lng: 36.7522,
     },
     {
       id: 'tarangire',
@@ -230,6 +234,8 @@ export const trip: TripInput = {
       image: img['tarangire'],
       info: 'Tercer parque más grande de Tanzania, santuario de enormes manadas de elefantes y famoso por sus baobabs gigantes y sus leones trepadores.',
       mapsQuery: 'Tarangire National Park',
+      lat: -3.8333,
+      lng: 36.0,
     },
     {
       id: 'lake-manyara',
@@ -240,6 +246,8 @@ export const trip: TripInput = {
       image: img['lake-manyara'],
       info: 'Lago alcalino al pie de la Falla del Rift, entre bosques de cus y tamarindos. Famoso por sus leones trepadores, flamencos y abundante avifauna.',
       mapsQuery: 'Lake Manyara National Park',
+      lat: -3.5833,
+      lng: 35.8167,
     },
     {
       id: 'ngorongoro',
@@ -250,6 +258,8 @@ export const trip: TripInput = {
       image: img['ngorongoro'],
       info: 'La mayor caldera volcánica intacta del mundo (20 km de diámetro, 600 m de profundidad) y Patrimonio de la Humanidad. Alberga los Cinco Grandes, incluido el escaso rinoceronte negro.',
       mapsQuery: 'Ngorongoro Crater',
+      lat: -3.1667,
+      lng: 35.5833,
     },
     {
       id: 'olduvai',
@@ -260,6 +270,8 @@ export const trip: TripInput = {
       image: img['olduvai'],
       info: 'La "cuna de la humanidad": yacimiento donde los Leakey hallaron restos de homínidos. Cuenta con un museo moderno con fósiles y herramientas.',
       mapsQuery: 'Olduvai Gorge Museum',
+      lat: -2.9925,
+      lng: 35.3519,
     },
     {
       id: 'serengeti-central',
@@ -270,6 +282,8 @@ export const trip: TripInput = {
       image: img['serengeti-central'],
       info: 'El corazón del Serengeti: sabanas infinitas, kopjes rocosos y una de las mayores poblaciones de leones del mundo. Avistamientos fiables de grandes felinos todo el año.',
       mapsQuery: 'Seronera, Serengeti National Park',
+      lat: -2.453,
+      lng: 34.823,
     },
     {
       id: 'serengeti-norte',
@@ -280,6 +294,8 @@ export const trip: TripInput = {
       image: img['serengeti-norte'],
       info: 'Región remota junto al río Mara, escenario de los legendarios cruces de la Gran Migración (jul–oct): cientos de miles de ñus y cebras desafiando a los cocodrilos.',
       mapsQuery: 'Kogatende, Northern Serengeti',
+      lat: -1.5684,
+      lng: 34.8869,
     },
     {
       id: 'karatu',
@@ -290,6 +306,8 @@ export const trip: TripInput = {
       image: img['karatu'],
       info: 'Pueblo de las Tierras Altas del Ngorongoro entre plantaciones de café, base para mercados locales, poblados masái y cascadas.',
       mapsQuery: 'Karatu, Tanzania',
+      lat: -3.3417,
+      lng: 35.6667,
     },
     // ——— Zanzíbar ———
     {
@@ -301,6 +319,8 @@ export const trip: TripInput = {
       image: img['kendwa'],
       info: 'Arena blanca en polvo y aguas turquesa en el extremo norte de la isla, sin grandes mareas: se puede nadar a cualquier hora. Famosa por sus atardeceres.',
       mapsQuery: 'Kendwa Beach, Zanzibar',
+      lat: -5.956,
+      lng: 39.296,
     },
     {
       id: 'mnemba',
@@ -311,6 +331,8 @@ export const trip: TripInput = {
       image: img['mnemba'],
       info: 'Arrecife de coral protegido frente a la costa noreste, el mejor snorkel de Zanzíbar entre peces tropicales, delfines y tortugas.',
       mapsQuery: 'Mnemba Atoll, Zanzibar',
+      lat: -5.8195,
+      lng: 39.3837,
     },
     {
       id: 'jozani',
@@ -321,6 +343,8 @@ export const trip: TripInput = {
       image: img['jozani'],
       info: 'Único hábitat del raro colobo rojo de Zanzíbar. Pasarelas por la selva y el manglar en el Parque Nacional de la Bahía de Jozani-Chwaka.',
       mapsQuery: 'Jozani Forest National Park, Zanzibar',
+      lat: -6.2667,
+      lng: 39.4167,
     },
     {
       id: 'prison-island',
@@ -331,6 +355,8 @@ export const trip: TripInput = {
       image: img['prison-island'],
       info: 'Isla de Changuu, frente a Stone Town, con una colonia de tortugas gigantes de Aldabra y una antigua prisión-cuarentena.',
       mapsQuery: 'Prison Island, Changuu, Zanzibar',
+      lat: -6.13,
+      lng: 39.175,
     },
     {
       id: 'stone-town',
@@ -341,6 +367,8 @@ export const trip: TripInput = {
       image: img['stone-town'],
       info: 'La Ciudad de Piedra, Patrimonio de la Humanidad: laberinto de callejuelas con influencias árabes, persas, indias y europeas, puertas talladas y bazares.',
       mapsQuery: 'Stone Town, Zanzibar',
+      lat: -6.163,
+      lng: 39.189,
     },
     {
       id: 'forodhani',
@@ -351,6 +379,8 @@ export const trip: TripInput = {
       image: img['forodhani'],
       info: 'Mercado nocturno de comida frente al mar: brochetas, "pizza zanzibarí" y zumo de caña, junto a la Casa de las Maravillas.',
       mapsQuery: 'Forodhani Gardens, Stone Town',
+      lat: -6.1622,
+      lng: 39.1875,
     },
     {
       id: 'spice-farm',
@@ -361,6 +391,8 @@ export const trip: TripInput = {
       image: img['spice-farm'],
       info: 'La "isla de las especias": visita a una plantación para oler y probar clavo, vainilla, canela y nuez moscada.',
       mapsQuery: 'Zanzibar Spice Farm',
+      lat: -6.11,
+      lng: 39.25,
     },
   ],
 
@@ -879,19 +911,140 @@ export const trip: TripInput = {
   },
 
   wildlife: [
-    { id: 'lion', name: 'León', nameLocal: 'Simba', big5: true, note: 'Serengeti y Ngorongoro; más activos al amanecer y al atardecer.' },
-    { id: 'leopard', name: 'Leopardo', nameLocal: 'Chui', big5: true, note: 'Esquivo; busca en los árboles del Serengeti y Tarangire.' },
-    { id: 'elephant', name: 'Elefante', nameLocal: 'Tembo', big5: true, note: 'Grandes manadas en Tarangire y el Serengeti.' },
-    { id: 'buffalo', name: 'Búfalo', nameLocal: 'Nyati', big5: true, note: 'Común en Manyara, Ngorongoro y el Serengeti.' },
-    { id: 'rhino', name: 'Rinoceronte', nameLocal: 'Faru', big5: true, note: 'El más difícil: rinoceronte negro en el cráter del Ngorongoro.' },
-    { id: 'cheetah', name: 'Guepardo', nameLocal: 'Duma', note: 'Llanuras abiertas del Serengeti; caza durante el día.' },
-    { id: 'giraffe', name: 'Jirafa', nameLocal: 'Twiga', note: 'Animal nacional de Tanzania; presente por todo el safari.' },
-    { id: 'zebra', name: 'Cebra', nameLocal: 'Punda milia', note: 'En enormes manadas durante la Gran Migración.' },
-    { id: 'wildebeest', name: 'Ñu', nameLocal: 'Nyumbu', note: 'Protagonista de los cruces del río Mara.' },
-    { id: 'hippo', name: 'Hipopótamo', nameLocal: 'Kiboko', note: 'En charcas y ríos; busca la "hippo pool" del Serengeti.' },
-    { id: 'crocodile', name: 'Cocodrilo', nameLocal: 'Mamba', note: 'Acecha en los cruces del río Mara.' },
-    { id: 'hyena', name: 'Hiena', nameLocal: 'Fisi', note: 'Hiena manchada; muy activa al anochecer.' },
-    { id: 'flamingo', name: 'Flamenco', note: 'Tiñe de rosa el lago Manyara y los lagos del Valle del Rift.' },
+    {
+      id: 'lion',
+      name: 'León',
+      nameLocal: 'Simba',
+      big5: true,
+      note: 'Serengeti y Ngorongoro; más activos al amanecer y al atardecer.',
+      image: img['wildlife-lion'],
+      about:
+        'Único felino verdaderamente social, vive en manadas por las llanuras del Serengeti y el cráter del Ngorongoro; cazan ellas, defienden ellos.',
+      fact: 'Su rugido puede oírse hasta a 8 km de distancia; es el más potente de los grandes felinos y se propaga mejor en el aire fresco del amanecer.',
+    },
+    {
+      id: 'leopard',
+      name: 'Leopardo',
+      nameLocal: 'Chui',
+      big5: true,
+      note: 'Esquivo; busca en los árboles del Serengeti y Tarangire.',
+      image: img['wildlife-leopard'],
+      about:
+        'Solitario y discreto, caza al acecho entre la maleza y descansa en las acacias; el más difícil de avistar de los Cinco Grandes.',
+      fact: 'Iza sus presas a lo alto de un árbol para ponerlas a salvo de leones e hienas, llegando a subir un peso similar o mayor que el suyo propio.',
+    },
+    {
+      id: 'elephant',
+      name: 'Elefante',
+      nameLocal: 'Tembo',
+      big5: true,
+      note: 'Grandes manadas en Tarangire y el Serengeti.',
+      image: img['wildlife-elephant'],
+      about:
+        'El mayor animal terrestre recorre la sabana en manadas guiadas por la hembra más vieja, cuya memoria conduce al grupo hacia el agua.',
+      fact: 'Su trompa reúne unos 40.000 músculos y termina en dos apéndices a modo de dedos, capaces de recoger del suelo algo tan diminuto como una semilla.',
+    },
+    {
+      id: 'buffalo',
+      name: 'Búfalo',
+      nameLocal: 'Nyati',
+      big5: true,
+      note: 'Común en Manyara, Ngorongoro y el Serengeti.',
+      image: img['wildlife-buffalo'],
+      about:
+        'Imprevisible y robusto, pasta en grandes rebaños por las praderas; nunca ha sido domesticado y se le respeta como uno de los Cinco Grandes.',
+      fact: 'Ante un ataque, el rebaño forma una muralla de cuernos y llega a cargar en grupo contra los leones para rescatar a un ternero apresado.',
+    },
+    {
+      id: 'rhino',
+      name: 'Rinoceronte',
+      nameLocal: 'Faru',
+      big5: true,
+      note: 'El más difícil: rinoceronte negro en el cráter del Ngorongoro.',
+      image: img['wildlife-rhino'],
+      about:
+        'Herbívoro acorazado y de vista pobre pero olfato fino; el escaso rinoceronte negro aún habita el cráter del Ngorongoro.',
+      fact: 'Su cuerno no tiene hueso: es queratina compacta, el mismo material que nuestro pelo y nuestras uñas, y crece durante toda su vida.',
+    },
+    {
+      id: 'cheetah',
+      name: 'Guepardo',
+      nameLocal: 'Duma',
+      note: 'Llanuras abiertas del Serengeti; caza durante el día.',
+      image: img['wildlife-cheetah'],
+      about:
+        'El esprínter de las llanuras abiertas caza de día, fiándose de la vista y de una aceleración fulgurante más que de la fuerza.',
+      fact: 'Pasa de 0 a 100 km/h en unos tres segundos; sus garras apenas se retraen y funcionan como clavos de zapatilla para agarrarse al suelo.',
+    },
+    {
+      id: 'giraffe',
+      name: 'Jirafa',
+      nameLocal: 'Twiga',
+      note: 'Animal nacional de Tanzania; presente por todo el safari.',
+      image: img['wildlife-giraffe'],
+      about:
+        'El animal más alto del mundo ramonea las copas de las acacias con una lengua prensil y oscura de casi medio metro.',
+      fact: 'Tiene la tensión arterial más alta de los mamíferos, casi el doble que la nuestra, para bombear la sangre hasta un cerebro que corona dos metros de cuello.',
+    },
+    {
+      id: 'zebra',
+      name: 'Cebra',
+      nameLocal: 'Punda milia',
+      note: 'En enormes manadas durante la Gran Migración.',
+      image: img['wildlife-zebra'],
+      about:
+        'Inseparable de los ñus en la Gran Migración, su pelaje a rayas hace casi imposible aislar a un individuo dentro de la manada.',
+      fact: 'El rayado desconcierta a moscas picadoras como la tse-tse: estudios de campo confirman que evitan posarse en superficies a rayas.',
+    },
+    {
+      id: 'wildebeest',
+      name: 'Ñu',
+      nameLocal: 'Nyumbu',
+      note: 'Protagonista de los cruces del río Mara.',
+      image: img['wildlife-wildebeest'],
+      about:
+        'Protagonista de la Gran Migración, cruza el Serengeti en manadas de cientos de miles persiguiendo la lluvia y el pasto nuevo.',
+      fact: 'En la parición, el 80 % de las crías nace en apenas tres semanas; el ternero se pone en pie a los pocos minutos y corre con la manada en una hora.',
+    },
+    {
+      id: 'hippo',
+      name: 'Hipopótamo',
+      nameLocal: 'Kiboko',
+      note: 'En charcas y ríos; busca la "hippo pool" del Serengeti.',
+      image: img['wildlife-hippo'],
+      about:
+        'Pasa el día sumergido en ríos y charcas para protegerse del sol y, al caer la noche, sale a pastar hierba por la orilla.',
+      fact: 'Segrega un fluido rojizo, su «sudor de sangre», que actúa a la vez como protector solar y como antibiótico natural sobre su piel.',
+    },
+    {
+      id: 'crocodile',
+      name: 'Cocodrilo',
+      nameLocal: 'Mamba',
+      note: 'Acecha en los cruces del río Mara.',
+      image: img['wildlife-crocodile'],
+      about:
+        'El cocodrilo del Nilo acecha inmóvil en los ríos y emboscadas de la migración, esperando a que las manadas crucen el agua.',
+      fact: 'El sexo de las crías no es genético: lo decide la temperatura del nido durante la incubación, de modo que un grado puede inclinar la balanza.',
+    },
+    {
+      id: 'hyena',
+      name: 'Hiena',
+      nameLocal: 'Fisi',
+      note: 'Hiena manchada; muy activa al anochecer.',
+      image: img['wildlife-hyena'],
+      about:
+        'Cazadora hábil y muy social, vive en clanes numerosos por la sabana y aprovecha cada presa hasta el último hueso.',
+      fact: 'Sus clanes son matriarcales: los lideran las hembras, más grandes y dominantes, y hasta la de menor rango manda sobre cualquier macho.',
+    },
+    {
+      id: 'flamingo',
+      name: 'Flamenco',
+      note: 'Tiñe de rosa el lago Manyara y los lagos del Valle del Rift.',
+      image: img['wildlife-flamingo'],
+      about:
+        'Tiñe de rosa los lagos alcalinos del Rift, donde filtra con el pico invertido las algas y diminutos crustáceos de los que se alimenta.',
+      fact: 'No nace rosa: su color proviene de los carotenoides de su dieta, y en los lagos del Rift, más pobres en ellos, luce tonos más pálidos.',
+    },
   ],
 
   inclusions: [
