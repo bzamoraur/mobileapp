@@ -7,6 +7,9 @@ import { MapPage } from '@/pages/MapPage';
 import { Phrases } from '@/pages/Phrases';
 import { Wildlife } from '@/pages/Wildlife';
 import { Expenses } from '@/pages/Expenses';
+import { Converter } from '@/pages/Converter';
+import { Emergency } from '@/pages/Emergency';
+import { Documents } from '@/pages/Documents';
 import { Help } from '@/pages/Help';
 import { Flights } from '@/pages/Flights';
 import { Insurance } from '@/pages/Insurance';
@@ -25,6 +28,9 @@ export function App() {
           <Route path="frases" element={<Phrases />} />
           <Route path="fauna" element={<Wildlife />} />
           <Route path="gastos" element={<Expenses />} />
+          <Route path="cambio" element={<Converter />} />
+          <Route path="emergencia" element={<Emergency />} />
+          <Route path="documentos" element={<Documents />} />
           <Route path="ayuda" element={<Help />} />
           <Route path="vuelos" element={<Flights />} />
           <Route path="seguro" element={<Insurance />} />

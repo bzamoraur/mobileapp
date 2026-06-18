@@ -255,6 +255,22 @@ export const weatherRow = z.object({
   rainPct: z.number().int().min(0).max(100).optional(),
 });
 
+/** One currency in the offline converter, expressed against the base currency. */
+export const exchangeRate = z.object({
+  code: z.string().min(1),
+  label: z.string().optional(),
+  /** How many units of this currency equal 1 unit of `base`. */
+  perBase: z.number().positive(),
+});
+
+/** Offline exchange-rate snapshot powering the currency converter. */
+export const exchange = z.object({
+  base: z.string().min(1),
+  /** Human label for when the rates were captured, e.g. "junio 2026 (aprox.)". */
+  updated: z.string().optional(),
+  rates: z.array(exchangeRate).min(1),
+});
+
 /** Rich practical section powering the Ayuda screen. */
 export const practical = z.object({
   intro: z.string().optional(),
@@ -262,6 +278,7 @@ export const practical = z.object({
   visa: helpLink.optional(),
   vaccines: z.string().optional(),
   money: z.string().optional(),
+  exchange: exchange.optional(),
   language: z.string().optional(),
   timezone: z.string().optional(),
   weather: z.array(weatherRow).default([]),
@@ -314,6 +331,9 @@ export const featureFlags = z
     wildlifeTracker: z.boolean().default(true),
     journal: z.boolean().default(true),
     expenses: z.boolean().default(true),
+    currencyConverter: z.boolean().default(true),
+    emergency: z.boolean().default(true),
+    documents: z.boolean().default(true),
   })
   .default({});
 
@@ -419,6 +439,7 @@ export type Contact = z.infer<typeof contact>;
 export type PhraseGroup = z.infer<typeof phraseGroup>;
 export type Phrase = z.infer<typeof phrase>;
 export type Practical = z.infer<typeof practical>;
+export type Exchange = z.infer<typeof exchange>;
 export type WeatherRow = z.infer<typeof weatherRow>;
 export type Agency = z.infer<typeof agency>;
 export type Tag = z.infer<typeof tag>;

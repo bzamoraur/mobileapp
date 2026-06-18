@@ -51,6 +51,9 @@ describe('tripSchema', () => {
     expect(base.features.wildlifeTracker).toBe(true);
     expect(base.features.journal).toBe(true);
     expect(base.features.expenses).toBe(true);
+    expect(base.features.currencyConverter).toBe(true);
+    expect(base.features.emergency).toBe(true);
+    expect(base.features.documents).toBe(true);
   });
 
   it('defaults wildlife to an empty list when omitted', () => {

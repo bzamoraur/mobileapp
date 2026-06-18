@@ -13,6 +13,9 @@ import {
   PinIcon,
   PawIcon,
   WalletIcon,
+  CoinsIcon,
+  FileIcon,
+  AlertIcon,
   ChevronRightIcon,
   SunsetIcon,
 } from '@/components/icons';
@@ -111,9 +114,28 @@ export function Home() {
               <QuickLink to="/fauna" label="Fauna" Icon={PawIcon} />
             )}
             {trip.features.expenses && <QuickLink to="/gastos" label="Gastos" Icon={WalletIcon} />}
+            {trip.features.currencyConverter && trip.practical?.exchange && (
+              <QuickLink to="/cambio" label="Cambio" Icon={CoinsIcon} />
+            )}
+            {trip.features.documents && (
+              <QuickLink to="/documentos" label="Documentos" Icon={FileIcon} />
+            )}
             {trip.insurance && <QuickLink to="/seguro" label="Seguro" Icon={ShieldIcon} />}
           </div>
         </section>
+
+        {trip.features.emergency &&
+          ((trip.practical?.emergencyContacts?.length ?? 0) > 0 ||
+            (trip.insurance?.assistance?.length ?? 0) > 0) && (
+            <Link
+              to="/emergencia"
+              className="tap flex items-center gap-3 rounded-card bg-red-600 p-4 text-white transition active:scale-[0.99]"
+            >
+              <AlertIcon width={22} height={22} />
+              <span className="flex-1 font-semibold">Emergencia · teléfonos útiles</span>
+              <ChevronRightIcon width={20} height={20} className="text-white/80" />
+            </Link>
+          )}
       </div>
     </div>
   );

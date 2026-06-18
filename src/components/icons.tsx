@@ -124,6 +124,28 @@ export const WalletIcon = (p: IconProps) => (
   </svg>
 );
 
+export const CoinsIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <ellipse cx="9" cy="7" rx="5" ry="2.5" />
+    <path d="M4 7v4c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5V7" />
+    <path d="M10 14.4c.7 1.2 2.6 2 5 2 2.8 0 5-1.1 5-2.5v-4c0-1-1.2-1.9-3-2.3" />
+  </svg>
+);
+
+export const FileIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M6 3.5h7L18 8v11.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z" />
+    <path d="M13 3.5V8h5" />
+  </svg>
+);
+
+export const AlertIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M12 4 2.5 20h19L12 4Z" />
+    <path d="M12 10v4M12 17h.01" />
+  </svg>
+);
+
 export const ChevronLeftIcon = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="m15 6-6 6 6 6" />
