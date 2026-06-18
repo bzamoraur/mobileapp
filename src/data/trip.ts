@@ -813,6 +813,14 @@ export const trip: TripInput = {
       'La fiebre amarilla no es obligatoria viniendo de España, pero sí se exige si se procede de un país endémico o se hace tránsito superior a 12 h en uno. Se aconseja viajar con la cartilla de vacunación. Consulta siempre con Sanidad Exterior / Vacunación Internacional.',
     money:
       'La moneda es el chelín tanzano (TZS). En parques y hoteles se acepta el dólar (USD); para compras pequeñas, paga en moneda local. Hay cajeros en las ciudades. Algunos comercios cobran un 5 % por pago con tarjeta.',
+    exchange: {
+      base: 'EUR',
+      updated: 'aprox. 2026 — verifica antes de viajar',
+      rates: [
+        { code: 'USD', label: 'Dólar estadounidense', perBase: 1.08 },
+        { code: 'TZS', label: 'Chelín tanzano', perBase: 2900 },
+      ],
+    },
     language: 'Swahili (e inglés ampliamente hablado).',
     timezone: 'Hora local UTC+3 (1–2 h más que en España, según la época).',
     weather: [
