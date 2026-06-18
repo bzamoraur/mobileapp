@@ -117,6 +117,10 @@ export const place = z.object({
   info: z.string().optional(),
   address: z.string().optional(),
   mapsQuery: z.string().min(1),
+  /** Latitude (WGS84) for the interactive map marker. Optional + backward-compatible. */
+  lat: z.number().min(-90).max(90).optional(),
+  /** Longitude (WGS84) for the interactive map marker. Optional + backward-compatible. */
+  lng: z.number().min(-180).max(180).optional(),
 });
 
 // ---------------------------------------------------------------------------

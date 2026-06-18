@@ -210,6 +210,8 @@ export const trip: TripInput = {
       image: img['arusha'],
       info: 'La "capital del safari" de Tanzania y puerta de entrada al Serengeti y al Kilimanjaro. Ciudad animada con su emblemático Clock Tower, talleres masái y vistas al monte Meru.',
       mapsQuery: 'Arusha, Tanzania',
+      lat: -3.3869,
+      lng: 36.683,
     },
     {
       id: 'mount-meru',
@@ -220,6 +222,8 @@ export const trip: TripInput = {
       image: img['mount-meru'],
       info: 'El segundo pico más alto de Tanzania (4.566 m), telón de fondo de Arusha, dentro del Parque Nacional de Arusha.',
       mapsQuery: 'Mount Meru, Arusha National Park',
+      lat: -3.2456,
+      lng: 36.7522,
     },
     {
       id: 'tarangire',
@@ -230,6 +234,8 @@ export const trip: TripInput = {
       image: img['tarangire'],
       info: 'Tercer parque más grande de Tanzania, santuario de enormes manadas de elefantes y famoso por sus baobabs gigantes y sus leones trepadores.',
       mapsQuery: 'Tarangire National Park',
+      lat: -3.8333,
+      lng: 36.0,
     },
     {
       id: 'lake-manyara',
@@ -240,6 +246,8 @@ export const trip: TripInput = {
       image: img['lake-manyara'],
       info: 'Lago alcalino al pie de la Falla del Rift, entre bosques de cus y tamarindos. Famoso por sus leones trepadores, flamencos y abundante avifauna.',
       mapsQuery: 'Lake Manyara National Park',
+      lat: -3.5833,
+      lng: 35.8167,
     },
     {
       id: 'ngorongoro',
@@ -250,6 +258,8 @@ export const trip: TripInput = {
       image: img['ngorongoro'],
       info: 'La mayor caldera volcánica intacta del mundo (20 km de diámetro, 600 m de profundidad) y Patrimonio de la Humanidad. Alberga los Cinco Grandes, incluido el escaso rinoceronte negro.',
       mapsQuery: 'Ngorongoro Crater',
+      lat: -3.1667,
+      lng: 35.5833,
     },
     {
       id: 'olduvai',
@@ -260,6 +270,8 @@ export const trip: TripInput = {
       image: img['olduvai'],
       info: 'La "cuna de la humanidad": yacimiento donde los Leakey hallaron restos de homínidos. Cuenta con un museo moderno con fósiles y herramientas.',
       mapsQuery: 'Olduvai Gorge Museum',
+      lat: -2.9925,
+      lng: 35.3519,
     },
     {
       id: 'serengeti-central',
@@ -270,6 +282,8 @@ export const trip: TripInput = {
       image: img['serengeti-central'],
       info: 'El corazón del Serengeti: sabanas infinitas, kopjes rocosos y una de las mayores poblaciones de leones del mundo. Avistamientos fiables de grandes felinos todo el año.',
       mapsQuery: 'Seronera, Serengeti National Park',
+      lat: -2.453,
+      lng: 34.823,
     },
     {
       id: 'serengeti-norte',
@@ -280,6 +294,8 @@ export const trip: TripInput = {
       image: img['serengeti-norte'],
       info: 'Región remota junto al río Mara, escenario de los legendarios cruces de la Gran Migración (jul–oct): cientos de miles de ñus y cebras desafiando a los cocodrilos.',
       mapsQuery: 'Kogatende, Northern Serengeti',
+      lat: -1.5684,
+      lng: 34.8869,
     },
     {
       id: 'karatu',
@@ -290,6 +306,8 @@ export const trip: TripInput = {
       image: img['karatu'],
       info: 'Pueblo de las Tierras Altas del Ngorongoro entre plantaciones de café, base para mercados locales, poblados masái y cascadas.',
       mapsQuery: 'Karatu, Tanzania',
+      lat: -3.3417,
+      lng: 35.6667,
     },
     // ——— Zanzíbar ———
     {
@@ -301,6 +319,8 @@ export const trip: TripInput = {
       image: img['kendwa'],
       info: 'Arena blanca en polvo y aguas turquesa en el extremo norte de la isla, sin grandes mareas: se puede nadar a cualquier hora. Famosa por sus atardeceres.',
       mapsQuery: 'Kendwa Beach, Zanzibar',
+      lat: -5.956,
+      lng: 39.296,
     },
     {
       id: 'mnemba',
@@ -311,6 +331,8 @@ export const trip: TripInput = {
       image: img['mnemba'],
       info: 'Arrecife de coral protegido frente a la costa noreste, el mejor snorkel de Zanzíbar entre peces tropicales, delfines y tortugas.',
       mapsQuery: 'Mnemba Atoll, Zanzibar',
+      lat: -5.8195,
+      lng: 39.3837,
     },
     {
       id: 'jozani',
@@ -321,6 +343,8 @@ export const trip: TripInput = {
       image: img['jozani'],
       info: 'Único hábitat del raro colobo rojo de Zanzíbar. Pasarelas por la selva y el manglar en el Parque Nacional de la Bahía de Jozani-Chwaka.',
       mapsQuery: 'Jozani Forest National Park, Zanzibar',
+      lat: -6.2667,
+      lng: 39.4167,
     },
     {
       id: 'prison-island',
@@ -331,6 +355,8 @@ export const trip: TripInput = {
       image: img['prison-island'],
       info: 'Isla de Changuu, frente a Stone Town, con una colonia de tortugas gigantes de Aldabra y una antigua prisión-cuarentena.',
       mapsQuery: 'Prison Island, Changuu, Zanzibar',
+      lat: -6.13,
+      lng: 39.175,
     },
     {
       id: 'stone-town',
@@ -341,6 +367,8 @@ export const trip: TripInput = {
       image: img['stone-town'],
       info: 'La Ciudad de Piedra, Patrimonio de la Humanidad: laberinto de callejuelas con influencias árabes, persas, indias y europeas, puertas talladas y bazares.',
       mapsQuery: 'Stone Town, Zanzibar',
+      lat: -6.163,
+      lng: 39.189,
     },
     {
       id: 'forodhani',
@@ -351,6 +379,8 @@ export const trip: TripInput = {
       image: img['forodhani'],
       info: 'Mercado nocturno de comida frente al mar: brochetas, "pizza zanzibarí" y zumo de caña, junto a la Casa de las Maravillas.',
       mapsQuery: 'Forodhani Gardens, Stone Town',
+      lat: -6.1622,
+      lng: 39.1875,
     },
     {
       id: 'spice-farm',
@@ -361,6 +391,8 @@ export const trip: TripInput = {
       image: img['spice-farm'],
       info: 'La "isla de las especias": visita a una plantación para oler y probar clavo, vainilla, canela y nuez moscada.',
       mapsQuery: 'Zanzibar Spice Farm',
+      lat: -6.11,
+      lng: 39.25,
     },
   ],
 
