@@ -316,6 +316,12 @@ export const wildlifeSpecies = z.object({
   big5: z.boolean().default(false),
   /** Where/when it is most likely to be seen. */
   note: z.string().optional(),
+  /** Portrait for the detail card (gradient-falls-back if absent). */
+  image: imageRef.optional(),
+  /** One-line description shown in the detail card. */
+  about: z.string().optional(),
+  /** A "¿Sabías que…?" fun fact for the detail card. */
+  fact: z.string().optional(),
 });
 
 /**

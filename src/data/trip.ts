@@ -879,19 +879,140 @@ export const trip: TripInput = {
   },
 
   wildlife: [
-    { id: 'lion', name: 'León', nameLocal: 'Simba', big5: true, note: 'Serengeti y Ngorongoro; más activos al amanecer y al atardecer.' },
-    { id: 'leopard', name: 'Leopardo', nameLocal: 'Chui', big5: true, note: 'Esquivo; busca en los árboles del Serengeti y Tarangire.' },
-    { id: 'elephant', name: 'Elefante', nameLocal: 'Tembo', big5: true, note: 'Grandes manadas en Tarangire y el Serengeti.' },
-    { id: 'buffalo', name: 'Búfalo', nameLocal: 'Nyati', big5: true, note: 'Común en Manyara, Ngorongoro y el Serengeti.' },
-    { id: 'rhino', name: 'Rinoceronte', nameLocal: 'Faru', big5: true, note: 'El más difícil: rinoceronte negro en el cráter del Ngorongoro.' },
-    { id: 'cheetah', name: 'Guepardo', nameLocal: 'Duma', note: 'Llanuras abiertas del Serengeti; caza durante el día.' },
-    { id: 'giraffe', name: 'Jirafa', nameLocal: 'Twiga', note: 'Animal nacional de Tanzania; presente por todo el safari.' },
-    { id: 'zebra', name: 'Cebra', nameLocal: 'Punda milia', note: 'En enormes manadas durante la Gran Migración.' },
-    { id: 'wildebeest', name: 'Ñu', nameLocal: 'Nyumbu', note: 'Protagonista de los cruces del río Mara.' },
-    { id: 'hippo', name: 'Hipopótamo', nameLocal: 'Kiboko', note: 'En charcas y ríos; busca la "hippo pool" del Serengeti.' },
-    { id: 'crocodile', name: 'Cocodrilo', nameLocal: 'Mamba', note: 'Acecha en los cruces del río Mara.' },
-    { id: 'hyena', name: 'Hiena', nameLocal: 'Fisi', note: 'Hiena manchada; muy activa al anochecer.' },
-    { id: 'flamingo', name: 'Flamenco', note: 'Tiñe de rosa el lago Manyara y los lagos del Valle del Rift.' },
+    {
+      id: 'lion',
+      name: 'León',
+      nameLocal: 'Simba',
+      big5: true,
+      note: 'Serengeti y Ngorongoro; más activos al amanecer y al atardecer.',
+      image: img['wildlife-lion'],
+      about:
+        'Único felino verdaderamente social, vive en manadas por las llanuras del Serengeti y el cráter del Ngorongoro; cazan ellas, defienden ellos.',
+      fact: 'Su rugido puede oírse hasta a 8 km de distancia; es el más potente de los grandes felinos y se propaga mejor en el aire fresco del amanecer.',
+    },
+    {
+      id: 'leopard',
+      name: 'Leopardo',
+      nameLocal: 'Chui',
+      big5: true,
+      note: 'Esquivo; busca en los árboles del Serengeti y Tarangire.',
+      image: img['wildlife-leopard'],
+      about:
+        'Solitario y discreto, caza al acecho entre la maleza y descansa en las acacias; el más difícil de avistar de los Cinco Grandes.',
+      fact: 'Iza sus presas a lo alto de un árbol para ponerlas a salvo de leones e hienas, llegando a subir un peso similar o mayor que el suyo propio.',
+    },
+    {
+      id: 'elephant',
+      name: 'Elefante',
+      nameLocal: 'Tembo',
+      big5: true,
+      note: 'Grandes manadas en Tarangire y el Serengeti.',
+      image: img['wildlife-elephant'],
+      about:
+        'El mayor animal terrestre recorre la sabana en manadas guiadas por la hembra más vieja, cuya memoria conduce al grupo hacia el agua.',
+      fact: 'Su trompa reúne unos 40.000 músculos y termina en dos apéndices a modo de dedos, capaces de recoger del suelo algo tan diminuto como una semilla.',
+    },
+    {
+      id: 'buffalo',
+      name: 'Búfalo',
+      nameLocal: 'Nyati',
+      big5: true,
+      note: 'Común en Manyara, Ngorongoro y el Serengeti.',
+      image: img['wildlife-buffalo'],
+      about:
+        'Imprevisible y robusto, pasta en grandes rebaños por las praderas; nunca ha sido domesticado y se le respeta como uno de los Cinco Grandes.',
+      fact: 'Ante un ataque, el rebaño forma una muralla de cuernos y llega a cargar en grupo contra los leones para rescatar a un ternero apresado.',
+    },
+    {
+      id: 'rhino',
+      name: 'Rinoceronte',
+      nameLocal: 'Faru',
+      big5: true,
+      note: 'El más difícil: rinoceronte negro en el cráter del Ngorongoro.',
+      image: img['wildlife-rhino'],
+      about:
+        'Herbívoro acorazado y de vista pobre pero olfato fino; el escaso rinoceronte negro aún habita el cráter del Ngorongoro.',
+      fact: 'Su cuerno no tiene hueso: es queratina compacta, el mismo material que nuestro pelo y nuestras uñas, y crece durante toda su vida.',
+    },
+    {
+      id: 'cheetah',
+      name: 'Guepardo',
+      nameLocal: 'Duma',
+      note: 'Llanuras abiertas del Serengeti; caza durante el día.',
+      image: img['wildlife-cheetah'],
+      about:
+        'El esprínter de las llanuras abiertas caza de día, fiándose de la vista y de una aceleración fulgurante más que de la fuerza.',
+      fact: 'Pasa de 0 a 100 km/h en unos tres segundos; sus garras apenas se retraen y funcionan como clavos de zapatilla para agarrarse al suelo.',
+    },
+    {
+      id: 'giraffe',
+      name: 'Jirafa',
+      nameLocal: 'Twiga',
+      note: 'Animal nacional de Tanzania; presente por todo el safari.',
+      image: img['wildlife-giraffe'],
+      about:
+        'El animal más alto del mundo ramonea las copas de las acacias con una lengua prensil y oscura de casi medio metro.',
+      fact: 'Tiene la tensión arterial más alta de los mamíferos, casi el doble que la nuestra, para bombear la sangre hasta un cerebro que corona dos metros de cuello.',
+    },
+    {
+      id: 'zebra',
+      name: 'Cebra',
+      nameLocal: 'Punda milia',
+      note: 'En enormes manadas durante la Gran Migración.',
+      image: img['wildlife-zebra'],
+      about:
+        'Inseparable de los ñus en la Gran Migración, su pelaje a rayas hace casi imposible aislar a un individuo dentro de la manada.',
+      fact: 'El rayado desconcierta a moscas picadoras como la tse-tse: estudios de campo confirman que evitan posarse en superficies a rayas.',
+    },
+    {
+      id: 'wildebeest',
+      name: 'Ñu',
+      nameLocal: 'Nyumbu',
+      note: 'Protagonista de los cruces del río Mara.',
+      image: img['wildlife-wildebeest'],
+      about:
+        'Protagonista de la Gran Migración, cruza el Serengeti en manadas de cientos de miles persiguiendo la lluvia y el pasto nuevo.',
+      fact: 'En la parición, el 80 % de las crías nace en apenas tres semanas; el ternero se pone en pie a los pocos minutos y corre con la manada en una hora.',
+    },
+    {
+      id: 'hippo',
+      name: 'Hipopótamo',
+      nameLocal: 'Kiboko',
+      note: 'En charcas y ríos; busca la "hippo pool" del Serengeti.',
+      image: img['wildlife-hippo'],
+      about:
+        'Pasa el día sumergido en ríos y charcas para protegerse del sol y, al caer la noche, sale a pastar hierba por la orilla.',
+      fact: 'Segrega un fluido rojizo, su «sudor de sangre», que actúa a la vez como protector solar y como antibiótico natural sobre su piel.',
+    },
+    {
+      id: 'crocodile',
+      name: 'Cocodrilo',
+      nameLocal: 'Mamba',
+      note: 'Acecha en los cruces del río Mara.',
+      image: img['wildlife-crocodile'],
+      about:
+        'El cocodrilo del Nilo acecha inmóvil en los ríos y emboscadas de la migración, esperando a que las manadas crucen el agua.',
+      fact: 'El sexo de las crías no es genético: lo decide la temperatura del nido durante la incubación, de modo que un grado puede inclinar la balanza.',
+    },
+    {
+      id: 'hyena',
+      name: 'Hiena',
+      nameLocal: 'Fisi',
+      note: 'Hiena manchada; muy activa al anochecer.',
+      image: img['wildlife-hyena'],
+      about:
+        'Cazadora hábil y muy social, vive en clanes numerosos por la sabana y aprovecha cada presa hasta el último hueso.',
+      fact: 'Sus clanes son matriarcales: los lideran las hembras, más grandes y dominantes, y hasta la de menor rango manda sobre cualquier macho.',
+    },
+    {
+      id: 'flamingo',
+      name: 'Flamenco',
+      note: 'Tiñe de rosa el lago Manyara y los lagos del Valle del Rift.',
+      image: img['wildlife-flamingo'],
+      about:
+        'Tiñe de rosa los lagos alcalinos del Rift, donde filtra con el pico invertido las algas y diminutos crustáceos de los que se alimenta.',
+      fact: 'No nace rosa: su color proviene de los carotenoides de su dieta, y en los lagos del Rift, más pobres en ellos, luce tonos más pálidos.',
+    },
   ],
 
   inclusions: [
