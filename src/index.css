@@ -65,3 +65,69 @@
     @apply absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/25 to-transparent;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Leaflet map theming
+ *
+ * The interactive map (MapPage) uses Leaflet. These rules strip Leaflet's
+ * default chrome on our themed `divIcon` pins and restyle the popup + controls
+ * to match the warm safari palette and rounded-card design. Kept outside
+ * @layer so they reliably override Leaflet's own (JS-imported) stylesheet.
+ * ------------------------------------------------------------------------- */
+.viaje-pin {
+  /* Themed SVG pin: drop Leaflet's default white box + border. */
+  background: transparent;
+  border: 0;
+}
+
+.leaflet-container {
+  /* Inherit the app font instead of Leaflet's default sans stack. */
+  font-family: theme('fontFamily.sans');
+  background: theme('colors.sand.100');
+}
+
+/* Popup: warm surface, soft card shadow, rounded corners. */
+.leaflet-popup-content-wrapper {
+  border-radius: theme('borderRadius.card');
+  box-shadow: theme('boxShadow.card');
+  background: theme('colors.surface.DEFAULT');
+  color: theme('colors.ink.700');
+}
+.leaflet-popup-content {
+  margin: 0.85rem 1rem;
+}
+.leaflet-popup-tip {
+  background: theme('colors.surface.DEFAULT');
+}
+.leaflet-popup-close-button {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 5px 5px 0 0 !important;
+  color: theme('colors.ink.500') !important;
+}
+
+/* Zoom controls: rounded, themed. */
+.leaflet-bar {
+  border-radius: theme('borderRadius.pill');
+  overflow: hidden;
+  box-shadow: theme('boxShadow.soft');
+  border: 0;
+}
+.leaflet-bar a {
+  background: theme('colors.surface.DEFAULT');
+  color: theme('colors.ink.700');
+  border-bottom-color: theme('colors.sand.200');
+}
+.leaflet-bar a:hover {
+  background: theme('colors.surface.muted');
+}
+
+/* Attribution: subtle, legible "© OpenStreetMap". */
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: theme('colors.ink.500');
+  font-size: 10px;
+}
+.leaflet-control-attribution a {
+  color: theme('colors.brand.600');
+}
