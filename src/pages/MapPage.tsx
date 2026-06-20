@@ -6,13 +6,8 @@ import { PlaceCard } from '@/components/PlaceCard';
 import { PlacesMap } from '@/components/PlacesMap';
 import { placeCategoryMeta } from '@/components/meta';
 import { SearchIcon, PinIcon } from '@/components/icons';
+import { regionPinColor } from '@/lib/leafletIcon';
 import { cn } from '@/lib/cn';
-
-/** Pin colours used in the map legend, mirrored from `lib/leafletIcon`. */
-const REGION_PIN_COLOR: Record<string, string> = {
-  Safari: '#a64d2c', // brand-600
-  Zanzíbar: '#4a5838', // moss-600
-};
 
 export function MapPage() {
   const [query, setQuery] = useState('');
@@ -79,7 +74,7 @@ export function MapPage() {
                 <span
                   aria-hidden
                   className="h-2.5 w-2.5 rounded-full"
-                  style={{ backgroundColor: REGION_PIN_COLOR[region] ?? '#a64d2c' }}
+                  style={{ backgroundColor: regionPinColor(region) }}
                 />
                 {region}
               </span>
