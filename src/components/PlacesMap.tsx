@@ -18,6 +18,9 @@ function hasCoords(p: Place): p is LocatedPlace {
 function FitBounds({ bounds }: { bounds: LatLngBoundsExpression }) {
   const map = useMap();
   useEffect(() => {
+    // Make Leaflet re-measure its container before framing the markers — guards
+    // against a gray map when the container gets its size after mount.
+    map.invalidateSize();
     map.fitBounds(bounds, { padding: [36, 36] });
   }, [map, bounds]);
   return null;

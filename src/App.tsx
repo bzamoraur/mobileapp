@@ -3,6 +3,7 @@ import { AppShell } from '@/components/AppShell';
 import { Home } from '@/pages/Home';
 import { Days } from '@/pages/Days';
 import { DayDetail } from '@/pages/DayDetail';
+import { Notebook } from '@/pages/Notebook';
 import { MapPage } from '@/pages/MapPage';
 import { Phrases } from '@/pages/Phrases';
 import { Wildlife } from '@/pages/Wildlife';
@@ -24,6 +25,7 @@ export function App() {
           <Route index element={<Home />} />
           <Route path="dias" element={<Days />} />
           <Route path="dias/:index" element={<DayDetail />} />
+          <Route path="notas" element={<Notebook />} />
           <Route path="mapa" element={<MapPage />} />
           <Route path="frases" element={<Phrases />} />
           <Route path="fauna" element={<Wildlife />} />

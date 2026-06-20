@@ -2,7 +2,7 @@ import { trip } from '@/data';
 import type { Journey } from '@/data/schema';
 import { PageHeader } from '@/components/PageHeader';
 import { CopyField } from '@/components/CopyField';
-import { PlaneIcon } from '@/components/icons';
+import { PlaneIcon, GlobeIcon } from '@/components/icons';
 import { capitalize, formatLongDate } from '@/lib/dates';
 
 function JourneyCard({ journey }: { journey: Journey }) {
@@ -62,16 +62,37 @@ function JourneyCard({ journey }: { journey: Journey }) {
             <CopyField key={i} label={`Vuelo ${leg.from.code}→${leg.to.code}`} value={leg.flightNumber} />
           ))}
         </div>
+
+        {journey.checkInUrl && (
+          <a
+            href={journey.checkInUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tap inline-flex items-center justify-center gap-1.5 rounded-pill bg-brand-600 px-4 py-2 text-sm font-semibold text-white active:scale-95"
+          >
+            <GlobeIcon width={18} height={18} /> Check-in online
+          </a>
+        )}
       </div>
     </article>
   );
 }
 
 export function Flights() {
+  const agency = trip.agency;
   return (
     <div>
       <PageHeader title="Vuelos" back />
       <div className="space-y-4 p-5 pt-2">
+        {agency && (agency.bookingRef || agency.locator) && (
+          <section className="card p-4">
+            <p className="eyebrow mb-2">Tu reserva</p>
+            <div className="flex flex-wrap gap-2">
+              {agency.bookingRef && <CopyField label="Referencia" value={agency.bookingRef} />}
+              {agency.locator && <CopyField label="Localizador" value={agency.locator} />}
+            </div>
+          </section>
+        )}
         {trip.journeys.map((j) => (
           <JourneyCard key={j.id} journey={j} />
         ))}

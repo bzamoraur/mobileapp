@@ -24,6 +24,11 @@ function read<T>(key: string, initial: T): T {
   }
 }
 
+/** One-off read of a persisted value (no React state) — for read-only views. */
+export function readPersisted<T>(key: string, initial: T): T {
+  return read(key, initial);
+}
+
 export function usePersistentState<T>(key: string, initial: T) {
   const [state, setState] = useState<T>(() => read(key, initial));
 

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { trip } from '@/data';
 import { getAccommodation, getDayByIndex, dayLabel } from '@/data/selectors';
@@ -5,14 +6,15 @@ import { HeroImage } from '@/components/HeroImage';
 import { TagRow } from '@/components/Tag';
 import { ActivityCard } from '@/components/ActivityCard';
 import { ExtrasList } from '@/components/ExtrasList';
-import { MapsButton } from '@/components/MapsButton';
+import { AccommodationDetail } from '@/components/AccommodationDetail';
 import { PageHeader } from '@/components/PageHeader';
 import { DayNotes } from '@/components/DayNotes';
-import { BedIcon, BinocularsIcon, InfoIcon } from '@/components/icons';
+import { BedIcon, BinocularsIcon, ChevronRightIcon, InfoIcon } from '@/components/icons';
 import { capitalize, formatDayMonth, formatLongDate } from '@/lib/dates';
 
 export function DayDetail() {
   const { index } = useParams();
+  const [hotelOpen, setHotelOpen] = useState(false);
   const dayIndex = Number(index);
   const day = Number.isFinite(dayIndex) ? getDayByIndex(trip, dayIndex) : undefined;
 
@@ -87,7 +89,11 @@ export function DayDetail() {
         )}
 
         {accommodation && (
-          <section className="card flex items-center justify-between gap-3 p-4">
+          <button
+            type="button"
+            onClick={() => setHotelOpen(true)}
+            className="card tap flex w-full items-center justify-between gap-3 p-4 text-left transition active:scale-[0.99]"
+          >
             <div className="min-w-0">
               <p className="eyebrow flex items-center gap-1.5">
                 <BedIcon width={15} height={15} /> Dormís en
@@ -95,12 +101,18 @@ export function DayDetail() {
               <p className="mt-1 truncate text-lg font-bold text-ink-900">{accommodation.name}</p>
               <p className="text-ink-500">{accommodation.area}</p>
             </div>
-            <MapsButton query={accommodation.mapsQuery} />
-          </section>
+            <ChevronRightIcon width={20} height={20} className="shrink-0 text-ink-400" />
+          </button>
         )}
 
         {trip.features.journal && <DayNotes dayIndex={day.index} />}
       </div>
+
+      <AccommodationDetail
+        accommodation={accommodation}
+        open={hotelOpen}
+        onClose={() => setHotelOpen(false)}
+      />
     </div>
   );
 }
