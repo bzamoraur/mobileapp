@@ -261,3 +261,48 @@ export const SunsetIcon = (p: IconProps) => (
     <path d="M3 18h18M5.5 18a6.5 6.5 0 0 1 13 0M12 3v3M5 7l1.5 1.5M19 7l-1.5 1.5M2 14h2M20 14h2" />
   </svg>
 );
+
+/* --- Expense category glyphs (stroke-based, 24×24) --------------------- */
+
+export const ForkKnifeIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M7 3v7M5 3v4.5A1.5 1.5 0 0 0 6.5 9H7M9 3v4.5A1.5 1.5 0 0 1 7.5 9H7M7 9v12" />
+    <path d="M17 3c-1.5 1-2.5 2.8-2.5 5.5 0 1.7 1 2.5 2.5 2.5V21" />
+  </svg>
+);
+
+export const CarIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M5 16v2.5M19 16v2.5M3 16v-3l2-5h14l2 5v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z" />
+    <path d="M3 13h18M7 16h.01M17 16h.01" />
+  </svg>
+);
+
+export const ActivityIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M12 3 4 6.5v5c0 4.5 3.3 7.7 8 9.5 4.7-1.8 8-5 8-9.5v-5L12 3Z" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
+
+export const BagIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M6 8h12l-1 11.5a1 1 0 0 1-1 .9H8a1 1 0 0 1-1-.9L6 8Z" />
+    <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+  </svg>
+);
+
+export const TipIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M14.5 9.2C14 8.3 13.1 7.8 12 7.8c-1.5 0-2.5.8-2.5 1.9 0 2.6 5 1.4 5 4 0 1.1-1 1.9-2.5 1.9-1.1 0-2-.5-2.5-1.4M12 6.5v1.3M12 16.2v1.3" />
+  </svg>
+);
+
+export const DotsIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="6" cy="12" r="1.4" />
+    <circle cx="12" cy="12" r="1.4" />
+    <circle cx="18" cy="12" r="1.4" />
+  </svg>
+);
