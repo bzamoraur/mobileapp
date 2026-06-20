@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import { theme } from '@/theme';
 
 /**
  * Themed Leaflet markers.
@@ -9,12 +10,13 @@ import L from 'leaflet';
  * URL bug, and it matches the warm safari palette. Markers are tinted by region.
  */
 
-// Palette values mirrored from tailwind.config.js so the pins match the theme.
+// Pin tints come from the active theme: brand (primary) + moss (secondary). The
+// region → colour map is trip-specific; unknown regions fall back to brand.
 const PIN_COLORS: Record<string, string> = {
-  Safari: '#a64d2c', // brand-600 — terracotta / safari clay
-  Zanzíbar: '#4a5838', // moss-600 — deep acacia green
+  Safari: theme.colors.brand['600'],
+  Zanzíbar: theme.colors.moss['600'],
 };
-const PIN_FALLBACK = '#a64d2c'; // brand-600
+const PIN_FALLBACK = theme.colors.brand['600'];
 
 /** Map-pin SVG (filled teardrop + inner dot), sized 28×40, anchored at the tip. */
 function pinSvg(color: string): string {
