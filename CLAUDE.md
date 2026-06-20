@@ -16,7 +16,8 @@ is no backend: the app is fully static, so it deploys anywhere and works offline
 ## Stack
 
 - **Vite + React 18 + TypeScript (strict)** — SPA.
-- **Tailwind CSS** — design system in `tailwind.config.js`.
+- **Tailwind CSS** — design system in `tailwind.config.ts`, palette + fonts
+  driven by the active theme preset (`src/theme/presets.ts`).
 - **react-router-dom** — routing.
 - **zod** — the trip schema + runtime/build-time validation.
 - **vite-plugin-pwa (Workbox)** — offline precache + installability.
@@ -42,10 +43,13 @@ Always run `npm run check` before committing. CI runs the same gate.
 
 ```
 src/
+  site.config.ts     # CONTENT LAYER: theme + branding (name, lang) per trip
+  theme/presets.ts   # named palettes + fonts; `index.ts` resolves the active one
   data/
     schema.ts        # THE CONTRACT: zod schema + inferred types for a Trip
     trip.sample.ts   # sample trip (used until the real plan is generated)
-    trip.ts          # the REAL trip (created via the import-travel-plan skill)
+    trip.ts          # the REAL trip (import-travel-plan / generate-from-destination)
+    images.ts        # slug → /img/*.webp map referenced by trip.ts
     index.ts         # loads + validates the active trip; exports `trip`
     selectors.ts     # derived reads (today's day, lookups by id)
   lib/               # pure helpers: dates, maps url, tts, cn
@@ -55,8 +59,8 @@ src/
   App.tsx            # routes
   main.tsx           # entry: SW registration, ErrorBoundary, AccessGate, App
 public/              # icons, favicon, robots, _headers, _redirects
-scripts/             # node helpers (icons, hash, trip validation)
-docs/                # architecture, data model, security, deployment, decisions
+scripts/             # node helpers (icons, hash, trip validation, fetch-images)
+docs/                # architecture, data model, security, deployment, factory, decisions
 ```
 
 ### Routes
@@ -90,9 +94,17 @@ docs/                # architecture, data model, security, deployment, decisions
   and access is gated. See `docs/SECURITY.md` — the gate is deterrence, not
   authentication; Cloudflare Access is the real lock.
 
-## Adding the real trip
+## Filling the trip (the "factory")
 
-The user provides a raw travel plan. Convert it with the **`import-travel-plan`**
-skill (`.claude/skills/import-travel-plan/`): it maps the plan onto the schema,
-writes `src/data/trip.ts`, switches `src/data/index.ts` to use it, sources
-imagery, and must end green on `npm run check`.
+This codebase is a reusable **mold**; a trip is just its **content layer**
+(`site.config.ts`, `data/trip.ts`, `data/images.ts`, `public/img/*`). Two skills
+fill it, both ending green on `npm run check`:
+
+- **`import-travel-plan`** — from a real booked plan (PDF/text/photos). Maps it
+  onto the schema, writes `src/data/trip.ts`, sources imagery.
+- **`generate-from-destination`** — from just a destination + preferences +
+  length. Researches the place, picks a theme, writes the whole content layer
+  with bookings left blank.
+
+The factory's architecture, theme system and the per-trip-repo runbook (one repo
+per trip) are documented in **`docs/FACTORY.md`**.
