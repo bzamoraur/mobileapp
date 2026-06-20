@@ -12,14 +12,16 @@ function ScrollToTop() {
 }
 
 /**
- * App shell: a fixed-height (dvh) column where only the content area scrolls, so
- * the bottom tab bar is a non-scrolling flex sibling — truly anchored to the
- * bottom even with iOS rubber-band overscroll. `overscroll-contain` keeps the
- * scroll from chaining out to the page.
+ * App shell: a fixed-height column where only the content area scrolls, so the
+ * bottom tab bar is a non-scrolling flex sibling — truly anchored to the bottom
+ * even with iOS rubber-band overscroll. Height is `h-full` (100%) to match the
+ * `html, body, #root { height: 100% }` chain: in an installed iOS PWA `100dvh`
+ * resolves *shorter* than 100%, which left a strip of body colour showing under
+ * the nav. `overscroll-contain` keeps the scroll from chaining out to the page.
  */
 export function AppShell() {
   return (
-    <div className="app-canvas flex h-dvh flex-col overflow-hidden">
+    <div className="app-canvas flex h-full flex-col overflow-hidden">
       <ScrollToTop />
       <main id="app-scroll" className="flex-1 overflow-y-auto overscroll-contain pb-4">
         <Outlet />
