@@ -40,6 +40,7 @@ export const trip: TripInput = {
       date: '2026-08-17',
       label: 'Ida · Madrid → Kilimanjaro',
       baggage: '2 maletas facturadas por persona · 23 kg',
+      checkInUrl: 'https://www.ethiopianairlines.com/',
       legs: [
         {
           airline: 'Ethiopian Airlines',
@@ -71,6 +72,7 @@ export const trip: TripInput = {
       date: '2026-08-30',
       label: 'Vuelta · Zanzíbar → Madrid',
       baggage: '2 maletas facturadas por persona · 23 kg',
+      checkInUrl: 'https://www.ethiopianairlines.com/',
       legs: [
         {
           airline: 'Ethiopian Airlines',

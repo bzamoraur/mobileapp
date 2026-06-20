@@ -194,6 +194,8 @@ export const journey = z.object({
   date: isoDate,
   label: z.string().optional(),
   baggage: z.string().optional(),
+  /** Airline check-in / manage-booking URL (for the CKI quick link). */
+  checkInUrl: httpUrl.optional(),
   legs: z.array(flightLeg).min(1),
 });
 

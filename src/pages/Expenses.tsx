@@ -1,40 +1,128 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { trip } from '@/data';
 import { usePersistentState } from '@/lib/usePersistentState';
+import { todayInTimezone, formatLongDate, capitalize } from '@/lib/dates';
+import {
+  CATEGORIES,
+  CATEGORY_LIST,
+  CURRENCIES,
+  DEFAULT_CATEGORY,
+  breakdownForCurrency,
+  dominantCurrency,
+  formatAmount,
+  groupByDay,
+  migrateExpenses,
+  totalsByCurrency,
+} from '@/lib/expenses';
+import type { CategoryId, Expense } from '@/lib/expenses';
 import { PageHeader } from '@/components/PageHeader';
 import { PlusIcon, CloseIcon } from '@/components/icons';
+import { cn } from '@/lib/cn';
 
-type Expense = { id: string; concept: string; amount: number; currency: string };
+/** Today's local calendar date in the destination timezone (YYYY-MM-DD). */
+function today(): string {
+  return todayInTimezone(trip.destinationTimezone);
+}
 
-const CURRENCIES = ['EUR', 'USD', 'TZS'] as const;
+/** Per-currency category breakdown rendered as elegant CSS proportion bars. */
+function CategoryBreakdown({ items }: { items: Expense[] }) {
+  const totals = useMemo(() => totalsByCurrency(items), [items]);
+  const [currency, setCurrency] = useState<string | null>(null);
+  const active = currency ?? dominantCurrency(items) ?? totals[0]?.currency;
+  if (!active || totals.length === 0) return null;
 
-function formatAmount(n: number): string {
-  return new Intl.NumberFormat('es-ES', { maximumFractionDigits: 2 }).format(n);
+  const slices = breakdownForCurrency(items, active);
+  if (slices.length === 0) return null;
+
+  return (
+    <section className="card space-y-4 p-4">
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="font-display text-xl font-semibold tracking-tightish text-ink-900">
+          Por categoría
+        </h2>
+        {totals.length > 1 && (
+          <div className="flex gap-1" role="group" aria-label="Moneda del desglose">
+            {totals.map((t) => {
+              const on = t.currency === active;
+              return (
+                <button
+                  key={t.currency}
+                  type="button"
+                  onClick={() => setCurrency(t.currency)}
+                  aria-pressed={on}
+                  className={cn(
+                    'rounded-pill px-3 py-1 text-xs font-semibold tracking-tightish',
+                    on ? 'bg-brand-600 text-white' : 'bg-surface-muted text-ink-500',
+                  )}
+                >
+                  {t.currency}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <ul className="space-y-3">
+        {slices.map((s) => (
+          <li key={s.category.id}>
+            <div className="mb-1.5 flex items-center gap-2 text-sm">
+              <s.category.icon width={18} height={18} className={cn('shrink-0', s.category.color)} />
+              <span className="font-medium text-ink-800">{s.category.label}</span>
+              <span className="ml-auto shrink-0 tabular-nums text-ink-500">
+                {Math.round(s.share)}%
+              </span>
+              <span className="shrink-0 tabular-nums font-semibold text-ink-700">
+                {formatAmount(s.total)}
+              </span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-pill bg-surface-sunken">
+              <div
+                className={cn('h-full rounded-pill', s.category.bar)}
+                style={{ width: `${Math.max(s.share, 3)}%` }}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 }
 
 /**
- * On-device expense tracker. Adds up what the family spends, grouped by currency
- * (EUR/USD/TZS). Everything is saved on this phone — no backend, no sharing.
+ * On-device expense tracker. Records what the family spends, tagged by category
+ * and date, with a per-currency category breakdown and totals grouped by day.
+ * Everything is saved on this phone — no backend, no sharing.
  */
 export function Expenses() {
-  const [items, setItems] = usePersistentState<Expense[]>(`expenses:${trip.id}`, []);
+  const [stored, setItems] = usePersistentState<Expense[]>(`expenses:${trip.id}`, []);
+  // Read defensively: legacy rows may lack `category`/`date`.
+  const items = useMemo(() => migrateExpenses(stored), [stored]);
+
   const [concept, setConcept] = useState('');
   const [amount, setAmount] = useState('');
   const [currency, setCurrency] = useState<string>('EUR');
+  const [category, setCategory] = useState<CategoryId>(DEFAULT_CATEGORY);
 
   const add = () => {
     const value = Number(amount.replace(',', '.'));
     if (!concept.trim() || !Number.isFinite(value) || value <= 0) return;
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-    setItems((prev) => [{ id, concept: concept.trim(), amount: value, currency }, ...prev]);
+    const next: Expense = {
+      id,
+      concept: concept.trim(),
+      amount: value,
+      currency,
+      category,
+      date: today(),
+    };
+    setItems((prev) => [next, ...prev]);
     setConcept('');
     setAmount('');
   };
 
-  const totals = CURRENCIES.map((c) => ({
-    currency: c,
-    total: items.filter((e) => e.currency === c).reduce((sum, e) => sum + e.amount, 0),
-  })).filter((t) => t.total > 0);
+  const totals = totalsByCurrency(items);
+  const groups = useMemo(() => groupByDay(items), [items]);
 
   return (
     <div>
@@ -54,6 +142,8 @@ export function Expenses() {
             ))}
           </section>
         )}
+
+        <CategoryBreakdown items={items} />
 
         <section className="card space-y-3 p-4">
           <input
@@ -86,6 +176,33 @@ export function Expenses() {
               ))}
             </select>
           </div>
+
+          <fieldset>
+            <legend className="eyebrow mb-2">Categoría</legend>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORY_LIST.map((c) => {
+                const on = c.id === category;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setCategory(c.id)}
+                    aria-pressed={on}
+                    className={cn(
+                      'tap inline-flex items-center gap-1.5 rounded-pill px-3 py-2 text-sm font-semibold tracking-tightish',
+                      on
+                        ? 'bg-brand-600 text-white'
+                        : 'bg-surface-muted text-ink-700 active:bg-sand-100',
+                    )}
+                  >
+                    <c.icon width={16} height={16} className={on ? 'text-white' : c.color} />
+                    {c.label}
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
+
           <button
             type="button"
             onClick={add}
@@ -96,24 +213,58 @@ export function Expenses() {
         </section>
 
         {items.length > 0 ? (
-          <ul className="space-y-2">
-            {items.map((e) => (
-              <li key={e.id} className="card flex items-center gap-3 p-4">
-                <p className="min-w-0 flex-1 truncate font-semibold text-ink-900">{e.concept}</p>
-                <span className="shrink-0 font-medium text-ink-700">
-                  {formatAmount(e.amount)} {e.currency}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setItems((prev) => prev.filter((x) => x.id !== e.id))}
-                  aria-label={`Eliminar ${e.concept}`}
-                  className="tap flex h-11 w-11 shrink-0 items-center justify-center rounded-pill text-ink-400 active:bg-sand-100 active:text-ink-700"
-                >
-                  <CloseIcon width={18} height={18} />
-                </button>
-              </li>
+          <div className="space-y-6">
+            {groups.map((group) => (
+              <section key={group.date ?? 'undated'} className="space-y-2">
+                <div className="flex items-baseline justify-between gap-3 px-1">
+                  <h2 className="font-display text-lg font-semibold tracking-tightish text-ink-900">
+                    {group.date ? capitalize(formatLongDate(group.date)) : 'Sin fecha'}
+                  </h2>
+                  <div className="flex flex-wrap justify-end gap-x-3 gap-y-0.5 text-sm text-ink-500">
+                    {group.subtotals.map((t) => (
+                      <span key={t.currency} className="tabular-nums">
+                        <span className="font-semibold text-ink-700">{formatAmount(t.total)}</span>{' '}
+                        {t.currency}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  {group.items.map((e) => {
+                    const meta = CATEGORIES[e.category];
+                    return (
+                      <li key={e.id} className="card flex items-center gap-3 p-4">
+                        <span
+                          className={cn(
+                            'flex h-10 w-10 shrink-0 items-center justify-center rounded-pill bg-surface-muted',
+                            meta.color,
+                          )}
+                          aria-hidden
+                        >
+                          <meta.icon width={20} height={20} />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate font-semibold text-ink-900">{e.concept}</span>
+                          <span className="block text-xs text-ink-500">{meta.label}</span>
+                        </span>
+                        <span className="shrink-0 tabular-nums font-medium text-ink-700">
+                          {formatAmount(e.amount)} {e.currency}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setItems((prev) => prev.filter((x) => x.id !== e.id))}
+                          aria-label={`Eliminar ${e.concept}`}
+                          className="tap flex h-11 w-11 shrink-0 items-center justify-center rounded-pill text-ink-400 active:bg-sand-100 active:text-ink-700"
+                        >
+                          <CloseIcon width={18} height={18} />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
             ))}
-          </ul>
+          </div>
         ) : (
           <p className="text-center text-ink-400">Aún no hay gastos anotados.</p>
         )}

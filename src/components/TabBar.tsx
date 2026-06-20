@@ -17,7 +17,7 @@ export function TabBar() {
   return (
     <nav
       aria-label="Navegación principal"
-      className="sticky bottom-0 z-30 mx-auto w-full max-w-app border-t border-surface-sunken/60 bg-surface/95 pb-[env(safe-area-inset-bottom)] shadow-nav backdrop-blur"
+      className="w-full border-t border-surface-sunken/60 bg-surface/95 pb-[env(safe-area-inset-bottom)] shadow-nav backdrop-blur"
     >
       <ul className="flex items-stretch justify-around">
         {ITEMS.map(({ to, label, Icon }) => (
