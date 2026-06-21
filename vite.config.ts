@@ -3,23 +3,43 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath, URL } from 'node:url';
+import { site } from './src/site.config';
+import { presets } from './src/theme/presets';
+
+const theme = presets[site.theme];
+
+/** Minimal HTML-entity escape for values injected into index.html. */
+const esc = (s: string): string =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // Offline-first PWA. The app must keep working in Japan with no/poor connectivity,
 // so all app-shell assets and bundled trip media are precached.
 export default defineConfig({
   plugins: [
     react(),
+    {
+      // Inject the active trip's branding into index.html (title, theme-color,
+      // description) from src/site.config.ts + the active theme.
+      name: 'viaje-branding',
+      transformIndexHtml(html: string) {
+        return html
+          .replaceAll('__APP_NAME__', esc(site.appName))
+          .replaceAll('__APP_SHORT_NAME__', esc(site.shortName))
+          .replaceAll('__APP_DESCRIPTION__', esc(site.description))
+          .replaceAll('__THEME_COLOR__', theme.colors.brand['600']);
+      },
+    },
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'robots.txt'],
       manifest: {
-        name: 'Tanzania & Zanzíbar',
-        short_name: 'Viaje',
-        description: 'Tu viaje a Tanzania y Zanzíbar, en el bolsillo. Funciona sin conexión.',
-        lang: 'es',
+        name: site.appName,
+        short_name: site.shortName,
+        description: site.description,
+        lang: site.lang,
         dir: 'ltr',
-        theme_color: '#a64d2c',
-        background_color: '#faf7f1',
+        theme_color: theme.colors.brand['600'],
+        background_color: theme.colors.sand['50'],
         display: 'standalone',
         orientation: 'portrait',
         start_url: '/',

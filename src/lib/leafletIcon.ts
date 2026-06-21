@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import { theme } from '@/theme';
 
 /**
  * Themed Leaflet markers.
@@ -9,12 +10,19 @@ import L from 'leaflet';
  * URL bug, and it matches the warm safari palette. Markers are tinted by region.
  */
 
-// Palette values mirrored from tailwind.config.js so the pins match the theme.
+// Pin tints come from the active theme: brand (primary) + moss (secondary). The
+// region → colour map is trip-specific; unknown regions fall back to brand.
 const PIN_COLORS: Record<string, string> = {
-  Safari: '#a64d2c', // brand-600 — terracotta / safari clay
-  Zanzíbar: '#4a5838', // moss-600 — deep acacia green
+  Safari: theme.colors.brand['600'],
+  Zanzíbar: theme.colors.moss['600'],
 };
-const PIN_FALLBACK = '#a64d2c'; // brand-600
+const PIN_FALLBACK = theme.colors.brand['600'];
+
+/** The themed pin colour for a region (unknown regions fall back to brand).
+ *  Shared with the Map legend so its dots always match the pins. */
+export function regionPinColor(region: string): string {
+  return PIN_COLORS[region] ?? PIN_FALLBACK;
+}
 
 /** Map-pin SVG (filled teardrop + inner dot), sized 28×40, anchored at the tip. */
 function pinSvg(color: string): string {
@@ -30,7 +38,7 @@ function pinSvg(color: string): string {
 /** Builds (and caches) a themed `divIcon` for a place's region. */
 const cache = new Map<string, L.DivIcon>();
 export function regionIcon(region: string): L.DivIcon {
-  const color = PIN_COLORS[region] ?? PIN_FALLBACK;
+  const color = regionPinColor(region);
   const cached = cache.get(color);
   if (cached) return cached;
   const icon = L.divIcon({
