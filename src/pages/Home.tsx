@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { trip } from '@/data';
+import { collectionIconMeta } from '@/components/meta';
 import { getCurrentDay, getAccommodation, nextDay, sortedDays } from '@/data/selectors';
 import { formatDateRange, formatLongDate, todayInTimezone } from '@/lib/dates';
 import { HeroImage } from '@/components/HeroImage';
@@ -113,6 +114,14 @@ export function Home() {
             {trip.features.wildlifeTracker && trip.wildlife.length > 0 && (
               <QuickLink to="/fauna" label="Fauna" Icon={PawIcon} />
             )}
+            {trip.collections.map((c) => (
+              <QuickLink
+                key={c.id}
+                to={`/coleccion/${c.id}`}
+                label={c.navLabel ?? c.title}
+                Icon={collectionIconMeta[c.icon]}
+              />
+            ))}
             {trip.features.expenses && <QuickLink to="/gastos" label="Gastos" Icon={WalletIcon} />}
             {trip.features.currencyConverter && trip.practical?.exchange && (
               <QuickLink to="/cambio" label="Cambio" Icon={CoinsIcon} />

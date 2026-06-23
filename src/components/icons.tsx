@@ -36,6 +36,13 @@ export const MapIcon = (p: IconProps) => (
   </svg>
 );
 
+export const CameraIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M3.5 8.5a2 2 0 0 1 2-2h2l1.2-2h6.6l1.2 2h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2Z" />
+    <circle cx="12" cy="13" r="3.4" />
+  </svg>
+);
+
 export const ChatIcon = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M4 5.5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 3.5V16.5H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z" />

@@ -60,6 +60,13 @@ Add a theme by copying a block and changing the hues — keep the colour **keys*
 Per-trip **feature flags** live in `trip.ts` (`features`) — e.g. a city trip
 sets `wildlifeTracker: false`; a domestic trip can drop `currencyConverter`.
 
+**Tailored tick-off sections.** The safari "Fauna" tracker is one instance of a
+general `collections` feature: each trip can ship its own checklists —
+"Monumentos", "Fotos que hacer", "Platos que probar", "Playas" — each rendering
+as a Home tile + a tickable page whose "done" state saves on-device. Safari /
+nature trips use `wildlife` (Big Five semantics); every other trip uses
+`collections` (see the schema's `collection` / `collectionItem`).
+
 ## Runbook: spin up a new trip-app (one repo per trip)
 
 > The decision is **one repo per trip** so each family gets an isolated app,

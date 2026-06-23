@@ -37,8 +37,8 @@ optional fields out.
 
 ## 2. Write `src/data/trip.ts`
 
-- `export const trip: Trip = { schemaVersion: 1, ... }` typed with
-  `import type { Trip } from './schema'`.
+- `export const trip: TripInput = { schemaVersion: 2, ... }` typed with
+  `import type { TripInput } from './schema'`.
 - Give every `day`, `activity`, `place`, `accommodation`, `flight` a stable
   unique `id`/`index`.
 - **Link, don't duplicate:** reference places from activities via `placeId`, and
@@ -47,6 +47,9 @@ optional fields out.
 - Phrases: `es` (Spanish), `target` (destination script), `romaji` (reading).
   Verify the target text and reading; don't guess script.
 - Mirror the reference's friendly Spanish tone in copy.
+- **Tailored tick-off list:** add a `collections` checklist that fits the trip
+  (monuments to see, photos to take, dishes to try…); see the schema's
+  `collection`. Use `wildlife` only for safari/nature trips.
 
 ## 3. Activate it
 

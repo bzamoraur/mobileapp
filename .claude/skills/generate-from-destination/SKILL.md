@@ -63,7 +63,9 @@ Verify before writing:
 - **Practical** info: currency + **approximate** exchange rates (label them
   "aprox."), etiquette, tipping norms, **emergency numbers**, plug type,
   documents/visa link, and a short month-by-month weather feel.
-- **Wildlife** list *only* for nature/safari trips (species + where seen).
+- **A tailored tick-off list** for the trip (see "Collections" below): use
+  `wildlife` only for nature/safari trips; use `collections` for everything else
+  (monuments to see, photos to take, dishes to try, beaches/dives…).
 
 ## 3. Choose the theme + branding → `site.config.ts`
 
@@ -81,6 +83,26 @@ Set `appName` (tab title + manifest), `shortName` (home-screen label),
 (`features`) to match: e.g. `wildlifeTracker: false` and omit `wildlife` for a
 city trip; keep `currencyConverter` on only when the currency differs from the
 travellers' home one.
+
+### Tailor the tick-off section (`collections`)
+
+Every trip type wants its own "collect them all" checklist — the generalised
+form of the safari fauna tracker. Add one or more to `trip.collections` (each
+renders as a Home tile + a tickable page; "done" state saves on-device):
+
+| Trip type | Collection idea | `icon` | `verb` |
+|---|---|---|---|
+| safari / nature | keep `wildlife` (Big Five) | — | visto |
+| city / cultural | "Monumentos imprescindibles" | `landmark` | visto |
+| any | "Fotos que hacer" (photo spots) | `camera` | hecho |
+| foodie | "Platos que probar" | `food` | probado |
+| beach / islands | "Playas y calas" · "Snorkel" | `waves` | visto |
+
+Each item is `{ id, name, subtitle?, note?, about?, fact?, highlight?, placeId? }`
+— mark the must-sees `highlight: true` for a featured section, and set the
+collection's `title`, short `navLabel`, `unit` (e.g. "monumentos") and `verb`.
+Ship several per trip if it fits. Safari → `wildlife`; everything else →
+`collections`. When you propose itinerary variations, propose the collection(s) too.
 
 ## 4. Write the content layer
 
