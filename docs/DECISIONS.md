@@ -51,6 +51,9 @@ Short log of the choices that shaped the project and why.
 - **Imagery on demand, no key:** `scripts/fetch-images.mjs` pulls CC-licensed
   photos (Openverse + Wikimedia) locally or via the **Fetch images** GitHub
   Action; missing photos degrade to themed gradients.
+- **Mold propagation via `npm run sync-template`:** trip repos pull mold updates
+  from the template while keeping their content layer. A shared npm package for
+  the mold was rejected to keep each trip a self-contained, static repo.
 - **Superpowers evaluated, deferred:** the obra/Superpowers methodology
   (brainstorm → TDD → review) is general-purpose dev discipline we largely already
   have (schema-first + CI + zero-regression). The factory's bottleneck is per-trip
@@ -76,6 +79,6 @@ Short log of the choices that shaped the project and why.
 - Real imagery sourcing happens during import/generation, locally or via the
   **Fetch images** GitHub Action.
 - Factory M2 (prove a second trip end-to-end) ✅ done — `viaje-japan` is live.
-- Factory M3 (industrialise) 🚧 remaining: propagate mold fixes to existing trip
-  repos (a documented "sync from template" step), per-trip deploy automation, and
-  a content-QA pass (links / coordinates / copy) beyond `npm run check`.
+- Factory M3 (industrialise) 🚧 remaining: per-trip deploy automation, and a
+  content-QA pass (links / coordinates / copy) beyond `npm run check`. Done:
+  blank-template reset, imagery Action, and `sync-template` mold propagation.

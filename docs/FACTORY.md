@@ -99,6 +99,28 @@ manual version (and the source of truth for what it does).
 - **The template is not neutral until reset.** `mobileapp` doubles as the live
   Tanzania app, so a fresh copy ships real personal data until step 2 runs.
 
+## Keeping trips in sync with the mold
+
+One repo per trip means a fix to the **mold** (components, schema, lib, skills,
+CI, config, docs) doesn't reach trips already created. To pull mold updates into
+a trip repo without disturbing its content:
+
+```bash
+git remote add template https://github.com/bzamoraur/mobileapp.git   # once
+npm run sync-template
+npm install && npm run check    # then review the diff, commit, open a PR
+```
+
+`sync-template` overwrites every mold file from the template branch and **leaves
+the content layer untouched** (`site.config.ts`, `trip.ts`, `images.ts`, the
+`fetch-images` QUERIES, and `public/img`). It refuses to run on a dirty tree and
+never commits for you — you review the diff first.
+
+Caveats: a file *deleted* in the template isn't auto-removed (scan `git status`);
+and because the per-trip image QUERIES live inside `scripts/fetch-images.mjs`,
+that script is treated as content — if the template changes its *logic*,
+reconcile it by hand.
+
 ## Status
 
 - **M0 — template-ready theming** ✅ visual identity extracted into the content
@@ -110,6 +132,6 @@ manual version (and the source of truth for what it does).
 - **M3 — industrialise** 🚧 cut the per-trip manual surface.
   - ✅ `new-trip` reset + skill (blank, personal-data-free template).
   - ✅ **Fetch images** GitHub Action (on-demand, no key needed).
-  - ⏳ propagate mold fixes to existing trip repos (a documented "sync from
-    template" step); per-trip deploy automation; a content-QA pass (links,
-    coordinates, copy) beyond `npm run check`.
+  - ✅ `sync-template` — propagate mold fixes into existing trip repos.
+  - ⏳ per-trip deploy automation; a content-QA pass (links, coordinates, copy)
+    beyond `npm run check`.
