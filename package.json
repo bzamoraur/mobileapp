@@ -19,6 +19,8 @@
     "test:watch": "vitest",
     "validate:trip": "tsx scripts/validate-trip.ts",
     "fetch:images": "node scripts/fetch-images.mjs",
+    "new-trip": "node scripts/new-trip.mjs",
+    "sync-template": "node scripts/sync-from-template.mjs",
     "check": "npm run typecheck && npm run lint && npm run test && npm run validate:trip"
   },
   "dependencies": {

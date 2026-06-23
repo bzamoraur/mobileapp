@@ -44,6 +44,22 @@ Short log of the choices that shaped the project and why.
   `generate-from-destination` (from a destination + preferences + length).
 - **One repo per trip:** each family gets an isolated repo, deploy, access code
   and optional domain — personal data never mixes between trips.
+- **Blank template via `npm run new-trip`:** `mobileapp` doubles as the live
+  Tanzania app, so a template copy carries the previous trip until reset. The
+  reset script blanks the content layer and deletes photos so no personal data
+  (locators, contacts, images) leaks between repos.
+- **Imagery on demand, no key:** `scripts/fetch-images.mjs` pulls CC-licensed
+  photos (Openverse + Wikimedia) locally or via the **Fetch images** GitHub
+  Action; missing photos degrade to themed gradients.
+- **Mold propagation via `npm run sync-template`:** trip repos pull mold updates
+  from the template while keeping their content layer. A shared npm package for
+  the mold was rejected to keep each trip a self-contained, static repo.
+- **Superpowers evaluated, deferred:** the obra/Superpowers methodology
+  (brainstorm → TDD → review) is general-purpose dev discipline we largely already
+  have (schema-first + CI + zero-regression). The factory's bottleneck is per-trip
+  *ops* (repo/deploy/imagery/hygiene), which it doesn't address — and bundling it
+  into every trip repo adds ceremony plus a third-party dependency to repos that
+  hold personal data. Revisit only for evolving the mold itself.
 
 ## Improvements over the reference
 
@@ -60,7 +76,9 @@ Short log of the choices that shaped the project and why.
 - Optional component/interaction tests as screens are finalised.
 - Deploys run via Cloudflare Pages' Git integration (push to `main`); CI is a
   quality gate only.
-- Real imagery sourcing happens during the import/generation of a trip.
-- Factory M2: create the `viaje-template` repo and prove the flow by generating
-  + deploying a second trip in its own repo (needs the user to authorise the new
-  repositories).
+- Real imagery sourcing happens during import/generation, locally or via the
+  **Fetch images** GitHub Action.
+- Factory M2 (prove a second trip end-to-end) ✅ done — `viaje-japan` is live.
+- Factory M3 (industrialise) 🚧 remaining: per-trip deploy automation, and a
+  content-QA pass (links / coordinates / copy) beyond `npm run check`. Done:
+  blank-template reset, imagery Action, and `sync-template` mold propagation.
