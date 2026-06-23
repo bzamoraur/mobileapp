@@ -35,6 +35,8 @@ jobs:
         run: npm test
       - name: Validate trip data
         run: npm run validate:trip
+      - name: Content QA
+        run: npm run qa:content
       - name: Build
         run: npm run build
       - name: Audit (non-blocking)

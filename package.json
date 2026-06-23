@@ -18,10 +18,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate:trip": "tsx scripts/validate-trip.ts",
+    "qa:content": "tsx scripts/qa-content.ts",
     "fetch:images": "node scripts/fetch-images.mjs",
     "new-trip": "node scripts/new-trip.mjs",
     "sync-template": "node scripts/sync-from-template.mjs",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run validate:trip"
+    "check": "npm run typecheck && npm run lint && npm run test && npm run validate:trip && npm run qa:content"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",

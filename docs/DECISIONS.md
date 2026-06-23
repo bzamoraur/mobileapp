@@ -54,6 +54,10 @@ Short log of the choices that shaped the project and why.
 - **Mold propagation via `npm run sync-template`:** trip repos pull mold updates
   from the template while keeping their content layer. A shared npm package for
   the mold was rejected to keep each trip a self-contained, static repo.
+- **Content-QA gate (`qa:content`):** heuristics beyond the schema — leftover
+  placeholders, day dates out of range, null-island / outlier coordinates, and
+  placeholder links — run in `npm run check` + CI. Link *reachability* (network)
+  is left to a future on-demand check, keeping the gate offline.
 - **Superpowers evaluated, deferred:** the obra/Superpowers methodology
   (brainstorm → TDD → review) is general-purpose dev discipline we largely already
   have (schema-first + CI + zero-regression). The factory's bottleneck is per-trip
@@ -79,6 +83,6 @@ Short log of the choices that shaped the project and why.
 - Real imagery sourcing happens during import/generation, locally or via the
   **Fetch images** GitHub Action.
 - Factory M2 (prove a second trip end-to-end) ✅ done — `viaje-japan` is live.
-- Factory M3 (industrialise) 🚧 remaining: per-trip deploy automation, and a
-  content-QA pass (links / coordinates / copy) beyond `npm run check`. Done:
-  blank-template reset, imagery Action, and `sync-template` mold propagation.
+- Factory M3 (industrialise) 🚧 remaining: per-trip deploy automation (Wrangler)
+  and an on-demand link-reachability check. Done: blank-template reset, imagery
+  Action, `sync-template` mold propagation, and the `qa:content` content gate.
