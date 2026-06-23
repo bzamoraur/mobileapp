@@ -133,5 +133,6 @@ reconcile it by hand.
   - ✅ `new-trip` reset + skill (blank, personal-data-free template).
   - ✅ **Fetch images** GitHub Action (on-demand, no key needed).
   - ✅ `sync-template` — propagate mold fixes into existing trip repos.
-  - ⏳ per-trip deploy automation; a content-QA pass (links, coordinates, copy)
-    beyond `npm run check`.
+  - ✅ content-QA gate (`qa:content`) — placeholder / day-date / coordinate /
+    link checks, in `npm run check` and CI.
+  - ⏳ per-trip deploy automation (Wrangler); on-demand link-reachability check.
