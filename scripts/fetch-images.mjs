@@ -36,6 +36,7 @@ try {
 }
 
 // Default search query per slug (override on the CLI for one-offs).
+// new-trip:queries-start — reset to {} per trip by scripts/new-trip.mjs
 const QUERIES = {
   hero: 'Kilimanjaro savanna acacia sunrise Tanzania',
   arusha: 'Arusha Tanzania town clock tower',
@@ -70,6 +71,7 @@ const QUERIES = {
   'wildlife-hyena': 'spotted hyena Serengeti Africa',
   'wildlife-flamingo': 'flamingos Lake Natron Tanzania pink',
 };
+// new-trip:queries-end
 
 const args = process.argv.slice(2);
 const force = args.includes('--force');

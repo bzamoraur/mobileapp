@@ -65,25 +65,51 @@ sets `wildlifeTracker: false`; a domestic trip can drop `currencyConverter`.
 > The decision is **one repo per trip** so each family gets an isolated app,
 > deploy, access code, and (optionally) domain — and personal data never mixes.
 
+The **`new-trip`** skill orchestrates the steps below end to end; this list is the
+manual version (and the source of truth for what it does).
+
 1. **Create the repo** from the `viaje-template` GitHub template (Use this
-   template → new repo). The template is this app with the sample trip and a
-   neutral theme.
-2. **Generate the content** — run the `generate-from-destination` skill (or
+   template → new repo). The template is `mobileapp` *after the factory landed on
+   `main`*, so a copy carries the mold **and** the skills — but it still holds the
+   previous trip's content until step 2.
+2. **Reset to a blank template** — `npm run new-trip -- --yes`. This rewrites the
+   content layer to neutral placeholders and **deletes the previous trip's data,
+   booking locators and photos**, so nothing personal leaks between repos. Never
+   skip it on a template copy.
+3. **Generate the content** — run the `generate-from-destination` skill (or
    `import-travel-plan` if a booking exists). Commit the content layer.
-3. **Source imagery** — run `node scripts/fetch-images.mjs` where the network is
-   open; commit `public/img/*` + updated `images.ts` + `CREDITS.md`.
-4. **Set the access code** — `node scripts/hash-code.mjs "<word>"` and store the
+4. **Source imagery** — run `npm run fetch:images` where the network is open, or
+   trigger the **Fetch images** GitHub Action (Actions → Run workflow; no API key
+   needed). Commit `public/img/*` + updated `images.ts` + `CREDITS.md`.
+5. **Set the access code** — `node scripts/hash-code.mjs "<word>"` and store the
    hash as `VITE_ACCESS_CODE_HASH` (build env / Cloudflare variable, never in
    git). See `docs/SECURITY.md`.
-5. **Deploy** — connect the repo to Cloudflare Pages (build `npm run build`,
+6. **Deploy** — connect the repo to Cloudflare Pages (build `npm run build`,
    output `dist/`). Pushes to `main` auto-deploy. See `docs/DEPLOYMENT.md`.
-6. **(Optional) domain** — attach a custom subdomain in Cloudflare Pages.
+7. **(Optional) domain** — attach a custom subdomain in Cloudflare Pages.
+
+### Gotchas learned in practice
+
+- **Put the factory on `main` before templating.** *Use this template* copies the
+  default branch as a one-time snapshot; if the mold/skills are only on a PR
+  branch, the copy won't have them, and templating again later won't back-fill.
+- **A running Claude Code session's repo scope is fixed at creation.** To fill a
+  new trip repo, start a session scoped to it (the factory's "one repo per trip"
+  already implies one session per trip).
+- **The template is not neutral until reset.** `mobileapp` doubles as the live
+  Tanzania app, so a fresh copy ships real personal data until step 2 runs.
 
 ## Status
 
 - **M0 — template-ready theming** ✅ visual identity extracted into the content
   layer with zero UI regression for the Tanzania trip.
 - **M1 — the generator** ✅ `generate-from-destination` skill + this runbook.
-- **M2 — prove it** ⏳ create the `viaje-template` repo, generate a sample trip
-  (a different destination + theme) into its own repo, and deploy it end-to-end.
-  Needs the user to authorise creating the new repositories.
+- **M2 — prove it** ✅ a second trip (`viaje-japan`, Tokio & Kioto, city theme)
+  was generated from the template and deployed live on Cloudflare Pages,
+  end-to-end, in its own repo.
+- **M3 — industrialise** 🚧 cut the per-trip manual surface.
+  - ✅ `new-trip` reset + skill (blank, personal-data-free template).
+  - ✅ **Fetch images** GitHub Action (on-demand, no key needed).
+  - ⏳ propagate mold fixes to existing trip repos (a documented "sync from
+    template" step); per-trip deploy automation; a content-QA pass (links,
+    coordinates, copy) beyond `npm run check`.
