@@ -7,6 +7,7 @@ import { Notebook } from '@/pages/Notebook';
 import { MapPage } from '@/pages/MapPage';
 import { Phrases } from '@/pages/Phrases';
 import { Wildlife } from '@/pages/Wildlife';
+import { Collection } from '@/pages/Collection';
 import { Expenses } from '@/pages/Expenses';
 import { Converter } from '@/pages/Converter';
 import { Emergency } from '@/pages/Emergency';
@@ -29,6 +30,7 @@ export function App() {
           <Route path="mapa" element={<MapPage />} />
           <Route path="frases" element={<Phrases />} />
           <Route path="fauna" element={<Wildlife />} />
+          <Route path="coleccion/:id" element={<Collection />} />
           <Route path="gastos" element={<Expenses />} />
           <Route path="cambio" element={<Converter />} />
           <Route path="emergencia" element={<Emergency />} />

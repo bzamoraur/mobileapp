@@ -350,6 +350,64 @@ export const featureFlags = z
   .default({});
 
 // ---------------------------------------------------------------------------
+// Collections — per-trip tick-off checklists (the general form of the safari
+// "fauna" tracker): "monuments to see", "photos to take", "dishes to try", …
+// ---------------------------------------------------------------------------
+
+/** Icons a collection can show on its Home tile + header. */
+export const collectionIcon = z.enum([
+  'landmark', // monuments / buildings
+  'camera', // photos to take
+  'food', // dishes to try
+  'star', // generic must-dos / highlights
+  'market', // markets / shopping
+  'nature', // viewpoints / nature
+  'waves', // beaches / water
+  'paw', // animals (non-safari)
+]);
+
+/** One tick-off item; "done" state is saved on-device, like the fauna tracker. */
+export const collectionItem = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  /** Secondary label (local name, neighbourhood, author…). */
+  subtitle: z.string().optional(),
+  /** One-liner: where/when to find it. */
+  note: z.string().optional(),
+  image: imageRef.optional(),
+  /** Longer description for the detail card. */
+  about: z.string().optional(),
+  /** A "¿Sabías que…?" fun fact for the detail card. */
+  fact: z.string().optional(),
+  /** Featured items get their own highlighted section (like the Big Five). */
+  highlight: z.boolean().default(false),
+  /** Optional link to a Map place or a Google Maps query. */
+  placeId: z.string().optional(),
+  mapsQuery: z.string().optional(),
+});
+
+/** A tailored checklist for this trip — the general form of `wildlife`. */
+export const collection = z.object({
+  id: z.string().min(1),
+  /** Page + header title, e.g. "Monumentos imprescindibles". */
+  title: z.string().min(1),
+  /** Short label for the Home tile (defaults to `title`). */
+  navLabel: z.string().optional(),
+  icon: collectionIcon.default('star'),
+  /** Sub-text under the progress summary. */
+  intro: z.string().optional(),
+  /** Plural noun for "X de Y <unit>", e.g. "monumentos". */
+  unit: z.string().optional(),
+  /** Past participle for the toggle, e.g. "visto" / "hecho" / "fotografiado". */
+  verb: z.string().optional(),
+  /** Heading for the highlighted items, e.g. "Imprescindibles". */
+  highlightTitle: z.string().optional(),
+  /** Heading for the remaining items, e.g. "Más lugares". */
+  restTitle: z.string().optional(),
+  items: z.array(collectionItem).min(1),
+});
+
+// ---------------------------------------------------------------------------
 // Trip (root)
 // ---------------------------------------------------------------------------
 
@@ -376,6 +434,7 @@ export const tripSchema = z
     practical: practical.optional(),
     features: featureFlags,
     wildlife: z.array(wildlifeSpecies).default([]),
+    collections: z.array(collection).default([]),
     inclusions: z.array(z.string()).default([]),
     exclusions: z.array(z.string()).default([]),
   })
@@ -383,6 +442,11 @@ export const tripSchema = z
     const placeIds = new Set(trip.places.map((p) => p.id));
     const accomIds = new Set(trip.accommodations.map((a) => a.id));
     const seenIndexes = new Set<number>();
+    const checkPlace = (pid: string | undefined, path: (string | number)[]) => {
+      if (pid && !placeIds.has(pid)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path, message: `placeId desconocido: ${pid}` });
+      }
+    };
 
     if (Date.parse(trip.startDate) > Date.parse(trip.endDate)) {
       ctx.addIssue({
@@ -416,17 +480,23 @@ export const tripSchema = z
           message: `accommodationId desconocido: ${d.accommodationId}`,
         });
       }
-      const checkPlace = (pid: string | undefined, path: (string | number)[]) => {
-        if (pid && !placeIds.has(pid)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path,
-            message: `placeId desconocido: ${pid}`,
-          });
-        }
-      };
       d.activities.forEach((a, j) => checkPlace(a.placeId, ['days', i, 'activities', j, 'placeId']));
       d.extras.forEach((e, j) => checkPlace(e.placeId, ['days', i, 'extras', j, 'placeId']));
+    });
+
+    const collectionIds = new Set<string>();
+    trip.collections.forEach((c, i) => {
+      if (collectionIds.has(c.id)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['collections', i, 'id'],
+          message: `Colección con id duplicado: ${c.id}`,
+        });
+      }
+      collectionIds.add(c.id);
+      c.items.forEach((it, j) =>
+        checkPlace(it.placeId, ['collections', i, 'items', j, 'placeId']),
+      );
     });
   });
 
@@ -458,4 +528,7 @@ export type Tag = z.infer<typeof tag>;
 export type TagKind = z.infer<typeof tagKind>;
 export type HelpLink = z.infer<typeof helpLink>;
 export type WildlifeSpecies = z.infer<typeof wildlifeSpecies>;
+export type Collection = z.infer<typeof collection>;
+export type CollectionItem = z.infer<typeof collectionItem>;
+export type CollectionIcon = z.infer<typeof collectionIcon>;
 export type FeatureFlags = z.infer<typeof featureFlags>;

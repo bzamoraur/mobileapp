@@ -74,4 +74,49 @@ describe('tripSchema', () => {
       expect(res.data.wildlife[1]!.big5).toBe(false);
     }
   });
+
+  it('defaults collections to an empty list when omitted', () => {
+    expect(base.collections).toEqual([]);
+  });
+
+  it('parses a collection, defaulting item.highlight to false and icon to "star"', () => {
+    const res = tripSchema.safeParse({
+      ...sampleTrip,
+      collections: [
+        {
+          id: 'monumentos',
+          title: 'Monumentos',
+          items: [
+            { id: 'm1', name: 'Catedral', highlight: true },
+            { id: 'm2', name: 'Plaza' },
+          ],
+        },
+      ],
+    });
+    expect(res.success).toBe(true);
+    if (res.success) {
+      expect(res.data.collections[0]!.icon).toBe('star');
+      expect(res.data.collections[0]!.items[0]!.highlight).toBe(true);
+      expect(res.data.collections[0]!.items[1]!.highlight).toBe(false);
+    }
+  });
+
+  it('rejects a collection item with an unknown placeId', () => {
+    const res = tripSchema.safeParse({
+      ...sampleTrip,
+      collections: [{ id: 'c', title: 'C', items: [{ id: 'i', name: 'X', placeId: 'nope' }] }],
+    });
+    expect(res.success).toBe(false);
+  });
+
+  it('rejects duplicate collection ids', () => {
+    const res = tripSchema.safeParse({
+      ...sampleTrip,
+      collections: [
+        { id: 'dup', title: 'A', items: [{ id: 'a', name: 'A' }] },
+        { id: 'dup', title: 'B', items: [{ id: 'b', name: 'B' }] },
+      ],
+    });
+    expect(res.success).toBe(false);
+  });
 });

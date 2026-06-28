@@ -1,8 +1,10 @@
 import type { ComponentType, SVGProps } from 'react';
-import type { Activity, PlaceCategory } from '@/data/schema';
+import type { Activity, CollectionIcon, PlaceCategory } from '@/data/schema';
 import {
   BalloonIcon,
   BinocularsIcon,
+  CameraIcon,
+  ForkKnifeIcon,
   LandmarkIcon,
   MarketIcon,
   MountainIcon,
@@ -10,6 +12,7 @@ import {
   PinIcon,
   PlaneIcon,
   SparkleIcon,
+  StarIcon,
   TreeIcon,
   WavesIcon,
 } from './icons';
@@ -28,6 +31,17 @@ export const placeCategoryMeta: Record<PlaceCategory, { label: string; Icon: Ico
   market: { label: 'Mercados', Icon: MarketIcon },
   culture: { label: 'Cultura', Icon: SparkleIcon },
   other: { label: 'Otros', Icon: PinIcon },
+};
+
+export const collectionIconMeta: Record<CollectionIcon, Icon> = {
+  landmark: LandmarkIcon,
+  camera: CameraIcon,
+  food: ForkKnifeIcon,
+  star: StarIcon,
+  market: MarketIcon,
+  nature: TreeIcon,
+  waves: WavesIcon,
+  paw: PawIcon,
 };
 
 export const activityTypeMeta: Record<Activity['type'], { label: string; Icon: Icon }> = {
